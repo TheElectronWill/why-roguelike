@@ -1,0 +1,3 @@
+EMPTY = 0
+STONE = 1
+DOOR = 2
