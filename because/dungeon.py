@@ -1,10 +1,10 @@
 from geom import Point
 
 class DungeonTerrain:
-    def __init__(self, xmax: int, ymax: int):
-        self._tiles = []*xmax*ymax
-        self.xmax = xmax
-        self.ymax = ymax
+    def __init__(self, width: int, height: int):
+        self._tiles = []*width*height
+        self.xmax = width
+        self.ymax = height
 
     def tiles(self):
         return iter(self._tiles)

@@ -11,7 +11,7 @@ class Point:
 
     def __iadd__(self, other):
         self.x += other.x
-        self.y += other.y
+        self.y += other.yfill_factor
 
     def __sub__(self, other):
         return Point(self.x-other.x, self.y-other.y)
@@ -42,7 +42,7 @@ class Box:
     def contains(self, p: Point):
         return self.xmin <= p.x <= self.xmax and self.ymin <= p.y <= self.ymax
 
-# Constants
+# Constantes
 DOWN = Point(0, 1)
 UP = Point(0, -1)
 RIGHT = Point(1, 0)
