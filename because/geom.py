@@ -1,24 +1,34 @@
 from math import sqrt
 from random import randint
 
-class Point:
+class Vec2D:
     def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
 
     def __add__(self, other):
-        return Point(self.x+other.x, self.y+other.y)
+        return Vec2D(self.x+other.x, self.y+other.y)
 
     def __iadd__(self, other):
         self.x += other.x
         self.y += other.yfill_factor
 
     def __sub__(self, other):
-        return Point(self.x-other.x, self.y-other.y)
+        return Vec2D(self.x-other.x, self.y-other.y)
 
     def __isub__(self, other):
         self.x -= other.x
         self.y -= other.y
+
+    def __mul__(self, k):
+        return Vec2D(self.x*k, self.y*k)
+
+    def __rmul__(self, k):
+        return k*self  # calls __mul__
+
+    def __imul__(self, k):
+        self.x *= k
+        self.y *= k
 
     def squaredDist(self, other):
         return (self.x-other.x)**2 + (self.y-other.y)**2
@@ -28,7 +38,7 @@ class Point:
 
     @staticmethod
     def random(xmax: int, ymax: int):
-        return Point(randint(0, xmax), randint(0, ymax))
+        return Vec2D(randint(0, xmax), randint(0, ymax))
 
 
 class Box:
@@ -39,11 +49,11 @@ class Box:
         self.xmax = xmax
         self.ymax = ymax
 
-    def contains(self, p: Point):
+    def contains(self, p: Vec2D):
         return self.xmin <= p.x <= self.xmax and self.ymin <= p.y <= self.ymax
 
 # Constantes
-DOWN = Point(0, 1)
-UP = Point(0, -1)
-RIGHT = Point(1, 0)
-LEFT = Point(-1, 0)
+DOWN = Vec2D(0, 1)
+UP = Vec2D(0, -1)
+RIGHT = Vec2D(1, 0)
+LEFT = Vec2D(-1, 0)
