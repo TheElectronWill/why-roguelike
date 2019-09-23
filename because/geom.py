@@ -24,7 +24,7 @@ class Vec2D:
         return Vec2D(self.x*k, self.y*k)
 
     def __rmul__(self, k):
-        return k*self  # calls __mul__
+        return self*k  # calls __mul__
 
     def __imul__(self, k):
         self.x *= k
