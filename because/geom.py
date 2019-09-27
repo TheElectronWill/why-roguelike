@@ -36,6 +36,9 @@ class Vec2D:
     def dist(self, other):
         return sqrt(self.squaredDist(other))
 
+    def snakeDist(self, other):
+        return abs(self.x-other.x) + (self.y-other.y)
+
     @staticmethod
     def random(xmax: int, ymax: int):
         return Vec2D(randint(0, xmax), randint(0, ymax))
