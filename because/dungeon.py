@@ -23,6 +23,12 @@ class DungeonTerrain:
 
 
 class DungeonLevel:
-    def __init__(self, terrain, entities):
+    def __init__(self,
+                 terrain: DungeonTerrain,
+                 entities: list,
+                 spawn: Vec2D,
+                 exit: Vec2D):
         self.terrain = terrain
         self.entities = entities
+        self.spawn = spawn
+        self.exit = exit

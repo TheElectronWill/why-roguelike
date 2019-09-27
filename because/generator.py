@@ -1,5 +1,5 @@
 from dungeon import DungeonLevel
-from geom import Vec2D
+from geom import Vec2D, UP, DOWN, RIGHT, LEFT
 import tiles
 
 from random import randint
@@ -11,7 +11,6 @@ Some dungeon generators
 
 
 class BspGenerator:
-
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
@@ -46,14 +45,22 @@ class WalkingGenerator:
         grid = [tiles.STONE] * grid_size
         entities = []  # TODO: generate entities (later)
 
-        target = int(grid_size*self.empty_factor)  # round it down
-        directions = [Vec2D.UP, Vec2D.DOWN, Vec2D.RIGHT, Vec2D.LEFT]
-        pos = Vec2D.random(self.width, self.height)
-        i = 0
+        spawn = Vec2D.random(self.width, self.height)
+        exit = None
+
+        squared_exit_dist = self.min_exit_distance**2  # optimization
+        target = int(grid_size*self.empty_factor)  # rounded down
+        directions = [UP, DOWN, RIGHT, LEFT]
+        pos, i = spawn, 0
         while i < target:
             # On vide la cellule courante
             if grid[pos] != tiles.EMPTY:
-                grid[pos] = tiles.EMPTY
+                # Cas spécial : escalier de sortie, pas trop proche du spawn
+                if not exit and pos.squaredDist(spawn) >= squared_exit_dist:
+                    grid[pos] = tiles.STAIRS_DOWN
+                    exit = pos
+                else:
+                    grid[pos] = tiles.EMPTY
                 i += 1
 
             # On se déplace ensuite dans une direction aléatoire (mais valide).
@@ -62,4 +69,4 @@ class WalkingGenerator:
                 next_pos = pos + directions[randint(0, 3)]
             pos = next_pos
 
-        return DungeonLevel(grid, entities)
+        return DungeonLevel(grid, entities, spawn, exit)
