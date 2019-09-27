@@ -1,22 +1,8 @@
-from dungeon import DungeonLevel
-from geom import Vec2D, UP, DOWN, RIGHT, LEFT
-import tiles
+from because.dungeon import DungeonLevel
+from because.geom import Vec2D
+from because import tiles
 
 from random import randint
-
-"""
-Some dungeon generators
-"""
-# TODO: implement 2 generators
-
-
-class BspGenerator:
-    def __init__(self, width: int, height: int):
-        self.width = width
-        self.height = height
-
-    def generate(self):
-        pass  # TODO:
 
 
 class WalkingGenerator:
@@ -50,7 +36,7 @@ class WalkingGenerator:
 
         squared_exit_dist = self.min_exit_distance**2  # optimization
         target = int(grid_size*self.empty_factor)  # rounded down
-        directions = [UP, DOWN, RIGHT, LEFT]
+        directions = [Vec2D.UP, Vec2D.DOWN, Vec2D.RIGHT, Vec2D.LEFT]
         pos, i = spawn, 0
         while i < target:
             # On vide la cellule courante
