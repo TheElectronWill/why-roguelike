@@ -60,3 +60,30 @@ class Box:
 
     def contains(self, p: Vec2D):
         return self.xmin <= p.x <= self.xmax and self.ymin <= p.y <= self.ymax
+
+    def width(self):
+        return self.xmax - self.xmin
+
+    def height(self):
+        return self.ymax - self.ymin
+
+    def corner_min(self):
+        return Vec2D(self.xmin, self.ymin)
+
+    def corner_max(self):
+        return Vec2D(self.xmax, self.ymax)
+
+    def center(self):
+        return Vec2D(self.width()//2, self.height()//2)
+
+    def real_center(self):
+        return (self.width()/2, self.height()/2)
+
+    def is_tall(self):
+        return self.height() > self.width()
+
+    def is_wide(self):
+        return self.height() < self.width()
+
+    def is_square(self):
+        return self.height() == self.width()
