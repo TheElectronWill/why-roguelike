@@ -43,6 +43,12 @@ class Vec2D:
     def random(xmax: int, ymax: int):
         return Vec2D(randint(0, xmax), randint(0, ymax))
 
+# Constantes
+Vec2D.DOWN = Vec2D(0, 1)
+Vec2D.UP = Vec2D(0, -1)
+Vec2D.RIGHT = Vec2D(1, 0)
+Vec2D.LEFT = Vec2D(-1, 0)
+
 
 class Box:
 
@@ -54,9 +60,3 @@ class Box:
 
     def contains(self, p: Vec2D):
         return self.xmin <= p.x <= self.xmax and self.ymin <= p.y <= self.ymax
-
-# Constantes
-DOWN = Vec2D(0, 1)
-UP = Vec2D(0, -1)
-RIGHT = Vec2D(1, 0)
-LEFT = Vec2D(-1, 0)
