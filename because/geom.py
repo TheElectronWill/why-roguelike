@@ -30,17 +30,33 @@ class Vec2D:
         self.x *= k
         self.y *= k
 
+    def squaredNorm(self):
+        return self.x**2 + self.y**2
+
+    def norm(self):
+        return sqrt(self.squaredNorm())
+
     def squaredDist(self, other):
         return (self.x-other.x)**2 + (self.y-other.y)**2
 
     def dist(self, other):
         return sqrt(self.squaredDist(other))
 
+    def snakeNorm(self):
+        """Computes the snake/manhattan norm of this vector"""
+        return abs(self.x) + abs(self.y)
+
     def snakeDist(self, other):
-        return abs(self.x-other.x) + (self.y-other.y)
+        """
+        Computes the snale/manhattan distance between this (vector considered
+        as a) point and another one.
+        """
+        return abs(self.x-other.x) + abs(self.y-other.y)
 
     @staticmethod
-    def random(xmax: int, ymax: int):
+    def random(xmax: int, ymax: int, including: bool=False):
+        if including:
+            xmax, ymax = xmax+1, ymax+1
         return Vec2D(randint(0, xmax), randint(0, ymax))
 
 # Constantes
@@ -51,7 +67,6 @@ Vec2D.LEFT = Vec2D(-1, 0)
 
 
 class Box:
-
     def __init__(self, xmin: int, ymin: int, xmax: int, ymax: int):
         self.xmin = xmin
         self.ymin = ymin
@@ -66,6 +81,12 @@ class Box:
 
     def height(self):
         return self.ymax - self.ymin
+
+    def dimension_min(self):
+        return min(self.width(), self.height())
+
+    def dimension_max(self):
+        return max(self.width(), self.height())
 
     def corner_min(self):
         return Vec2D(self.xmin, self.ymin)
@@ -87,3 +108,6 @@ class Box:
 
     def is_square(self):
         return self.height() == self.width()
+
+    def __str__(self, arg):
+        return "[{}, {}]x[{}, {}]".format(self.xmin, self.ymin, self.xmax, self.ymax)
