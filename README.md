@@ -1,16 +1,12 @@
-# Because 💀
+# WHY 🌳
+**Welcome to the Holy Yggdrasil**
 
-`Because` is a rogue-like ASCII game in Python.
+You wake up in what looks like a dungeon.
+You aren't hurt\*, but you feel like this isn't where you should be...
+WHY are you there?
 
-## FAQ
-### Why an ASCII rogue-like?
-Because it's a mandatory 1st-year project.
+## Compiling
+*TODO: mill wrapper*
 
-### Why Python?
-Because it's set by our teacher ¯\\_(ツ)_/¯
 
-### Why did I die again?
-Because this game isn't easy.
-
-### Why?
-Because!
+*: at least, not yet...
