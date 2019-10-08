@@ -1,13 +1,14 @@
 package com.electronwill.why
 
-trait DungeonLevel {
-  val level: Int
-  val name: String
-  def terrain: DungeonTerrain
-  def entityAt(pos: Vec2i): Option[Entity]
+class DungeonLevel(val level: Int,
+                   val name: String,
+                   val spawnPosition: Vec2i,
+                   val terrain: DungeonTerrain) {
+  def entityAt(pos: Vec2i): Option[Entity] = None // TODO implement entities
 }
 
-trait DungeonTerrain {
-  def apply(pos: Vec2i): Tile
-  def update(pos: Vec2i, t: Tile): Unit
+class DungeonTerrain(width: Int, height: Int) {
+  private val grid = Grid[Tile](width, height)
+
+  export grid._ // expose grid methods as DungeonTerrain's
 }
