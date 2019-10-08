@@ -15,6 +15,9 @@ To compile, simply run
 ./sbt compile
 ```
 
+You can also run sbt's shell with `./sbt` and then execute commands like
+`compile`, `test`, etc.
+
 ## Warning: experimental Scala version
 Because it's fun to learn new things (and because I'm a contributor),
 this project doesn't use Scala 2.x but Dotty, an experimental research project
