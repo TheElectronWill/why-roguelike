@@ -1,5 +1,7 @@
 package com.elecronwill.why
 
+import scala.util.Random
+
 /** Vector of 2 integer coordinates (immutable). */
 final case class Vec2i(x: Int, y: Int) {
   def +(v: Vec2i) = Vec2i(x+v.x, y+v.y)
@@ -25,6 +27,12 @@ final case class Vec2i(x: Int, y: Int) {
 }
 
 object Vec2i {
+  def random(minInclusive: Vec2i, maxExclusive: Vec2i) = {
+    val x = Random.between(minInclusive.x, maxExclusive.x)
+    val y = Random.between(minInclusive.y, maxExclusive.y)
+    Vec2i(x, y)
+  }
+
   val Right = Vec2i(1,0)
   val Left = Vec2i(-1,0)
   val Up = Vec2i(0,-1)

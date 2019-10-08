@@ -9,7 +9,7 @@ final class Grid[A : ClassTag](val width: Int,
   private val storage = Array[A](height * width)
 
   /** @return the index of a position in the internal array */
-  private inline def idx(pos: Vec2i): Int = idx(pos.x, pos.y)
+  private inline def idx(pos: Vec2i): Int = width*pos.y + pos.x
 
   def apply(pos: Vec2i): A = storage(idx(pos))
 
@@ -24,4 +24,8 @@ final class Grid[A : ClassTag](val width: Int,
 
   @alpha("remove")
   def -= (pos: Vec2i): Unit = storage(pos) = default
+
+  def isValid(pos: Vec2i): Boolean =
+    pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height
+
 }

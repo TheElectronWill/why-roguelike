@@ -5,4 +5,5 @@ object StandardTiles {
   val Unknown = BasicTile("?", false)
   val Floor = BasicTile("floor", false)
   val Wall = BasicTile("wall", true)
+  val StairsDown = BasicTile("stairs-down", true)
 }

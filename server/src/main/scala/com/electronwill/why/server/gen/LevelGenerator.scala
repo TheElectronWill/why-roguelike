@@ -1,5 +1,5 @@
 package com.electronwill.why.server
 
 trait LevelGenerator {
-  def generate(level: Int): Unit = DungeonLevel
+  def generate(level: Int): DungeonLevel
 }
