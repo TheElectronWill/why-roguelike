@@ -1,8 +1,9 @@
 package com.electronwill.why.server.gen
 
 import scala.util.Random
-import com.electronwill.why.util.Vec2i
-import com.electronwill.why.util.extensions._
+import com.electronwill.why._
+import com.electronwill.why.util._
+import com.electronwill.why.util.Extensions._
 
 /**
  * Un générateur de niveau basé sur de la marche aléatoire.
@@ -25,15 +26,15 @@ class WalkingGenerator(private val width: Int,
   def generate(level: Int): DungeonLevel = {
     val grid = Grid[Tile](width, height, Tiles.Wall)
     val target = (width*height*emptyFactor).toInt
-    val spawn = Vec2i.random()
+    val spawn = Vec2i.random(Vec2i(0,0), Vec2i(width, height))
     var exit: Vec2i = null
     var pos = spawn
     var i = 0
     while (i < target) {
       // On vide la cellule courante
       if (grid(pos) == Tiles.Wall) {
-        val cell = generateCell(pos, exit == null)
-        if (cell = Tiles.StairsDown) {
+        val cell = generateCell(pos, spawn, exit == null)
+        if (cell == Tiles.StairsDown) {
           exit = pos
         }
         grid(pos) = cell
@@ -44,7 +45,7 @@ class WalkingGenerator(private val width: Int,
     DungeonLevel(level, levelName(level), spawn, exit, grid)
   }
 
-  private def generateCell(pos: Vec2i, tryExit: Boolean): Tile = {
+  private def generateCell(pos: Vec2i, spawn: Vec2i, tryExit: Boolean): Tile = {
     // Cas spécial : escalier de sortie, pas trop proche du spawn
     if (tryExit && pos.squaredDist(spawn) >= squaredMinExitDistance) {
       Tiles.StairsDown
@@ -54,6 +55,7 @@ class WalkingGenerator(private val width: Int,
   }
 
   private def randomValidNeighbour(pos: Vec2i, grid: Grid[?]): Vec2i = {
+    import WalkingGenerator._
     var next = Vec2i(-1, -1)
     while (!grid.isValid(next)) {
       next = pos + Directions.randomElement

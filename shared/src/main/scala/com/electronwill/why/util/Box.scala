@@ -1,4 +1,4 @@
-package com.electronwill.why
+package com.electronwill.why.util
 
 final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) {
   def xMin: Int = xmin
@@ -29,6 +29,6 @@ object Box {
   def intervals(x: (Int, Int), y: (Int, Int)) = Box(x._1, y._1, x._2, y._2)
   def center(c: Vec2i, width: Int, height: Int) = {
     val diff = Vec2i(width/2, height/2)
-    Box(c-diff, c+diff)
+    Box.corners(c-diff, c+diff)
   }
 }

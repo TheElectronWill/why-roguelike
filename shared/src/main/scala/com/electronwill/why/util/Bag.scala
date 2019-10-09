@@ -1,4 +1,4 @@
-package com.electronwill.collection
+package com.electronwill.why.util
 
 import scala.collection.mutable.Iterable
 import scala.reflect.ClassTag
@@ -12,10 +12,11 @@ import scala.reflect.ClassTag
  * @see in TuubesCore: Bag.scala, SimpleBag.scala
  */
 final class Bag[A >: Null <: AnyRef: ClassTag](initialCapacity: Int = 16) extends Iterable[A] {
+  import Bag._
   private[this] var array = new Array[A](initialCapacity)
   private[this] var s: Int = 0
 
-  def size: Int = s
+  override def size: Int = s
   def apply(i: Int): A = array(i)
   def remove(i: Int): Unit = {
     val last = array(s)
@@ -80,7 +81,7 @@ final class Bag[A >: Null <: AnyRef: ClassTag](initialCapacity: Int = 16) extend
     }
   }
 
-  def foreach[U](f: A => U): Unit = {
+  override def foreach[U](f: A => U): Unit = {
     val l = s
     var i = 0
     while (i < l) {

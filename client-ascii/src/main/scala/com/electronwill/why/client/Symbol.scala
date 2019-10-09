@@ -1,4 +1,7 @@
-package com.elecronwill.why.client
+package com.electronwill.why.client
+
+import com.electronwill.why.{Tile, Entity}
+import com.electronwill.why.Tiles._
 
 object Symbol {
   def apply(t: Tile): Char = t match {

@@ -1,19 +1,21 @@
-package com.elecronwill.why.server.gen
+package com.electronwill.why.server.gen
+
+import com.electronwill.why.util.Box
 
 class BspTree(region: Box) {
   val root = BspNode(region)
 }
 
-class BspNode(val region: Box) {
-  private var a: Node = null
-  private var b: Node = null
+class BspNode(val box: Box) {
+  private var a: BspNode = null
+  private var b: BspNode = null
 
   def childA = a
   def childB = b
 
   def isLeaf = a == null && a == null
 
-  def split(horizontally: Boolean = region.isTall()): Unit = {
+  def split(horizontally: Boolean = box.isTall): Unit = {
     val boxCenter = box.roundedCenter
     var (regionA, regionB) =
       if (horizontally) {
@@ -27,7 +29,7 @@ class BspNode(val region: Box) {
           Box.intervals((box.xMin, boxCenter.x), box.yInterval)
         )
       }
-    a = Node(regionA)
-    b = Node(regionB)
+    a = BspNode(regionA)
+    b = BspNode(regionB)
   }
 }

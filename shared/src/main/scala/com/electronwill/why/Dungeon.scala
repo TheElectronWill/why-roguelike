@@ -1,5 +1,7 @@
 package com.electronwill.why
 
+import util._
+
 class DungeonLevel(val level: Int,
                    val name: String,
                    val spawnPosition: Vec2i,

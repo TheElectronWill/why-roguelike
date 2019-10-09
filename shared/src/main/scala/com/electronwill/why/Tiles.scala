@@ -1,6 +1,6 @@
 package com.electronwill.why
 
-object StandardTiles {
+object Tiles {
   val Nothing = BasicTile("ø", false)
   val Unknown = BasicTile("?", false)
   val Floor = BasicTile("floor", false)

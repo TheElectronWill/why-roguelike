@@ -1,21 +1,22 @@
-package com.elecronwill.why
+package com.electronwill.why.util
 
+import scala.math._
 import scala.util.Random
 
 /** Vector of 2 integer coordinates (immutable). */
 final case class Vec2i(x: Int, y: Int) {
   def +(v: Vec2i) = Vec2i(x+v.x, y+v.y)
-  def -(v: Vec2i) = Vec2i(x-v.x y-v.y)
+  def -(v: Vec2i) = Vec2i(x-v.x, y-v.y)
   def *(k: Int) = Vec2i(k*x, k*y)
   def unary_-() = Vec2i(-x, -y)
 
   def squaredNorm: Int = x*x + y*y
 
-  def norm: Double = math.sqrt(squaredNorm)
+  def norm: Double = sqrt(squaredNorm.toDouble)
 
-  def squaredDist(other: Vec2i): Int = (other-this).norm
+  def squaredDist(other: Vec2i): Int = (other-this).squaredNorm
 
-  def dist(other: Vec2i): Double = math.sqrt(squaredDist(other))
+  def dist(other: Vec2i): Double = (other-this).norm
 
   /** @return the snake/manhattan norm of this vector */
   def snakeNorm: Int = abs(x) + abs(y)
@@ -30,7 +31,7 @@ object Vec2i {
   def random(minInclusive: Vec2i, maxExclusive: Vec2i) = {
     val x = Random.between(minInclusive.x, maxExclusive.x)
     val y = Random.between(minInclusive.y, maxExclusive.y)
-    Vec2i(x, y)
+    new Vec2i(x, y)
   }
 
   val Right = Vec2i(1,0)
