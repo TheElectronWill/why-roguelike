@@ -31,4 +31,5 @@ object Box {
     val diff = Vec2i(width/2, height/2)
     Box.corners(c-diff, c+diff)
   }
+  def positive(width: Int, height: Int) = Box(0, 0, width, height)
 }
