@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion := "0.19.0-RC1"
+ThisBuild / scalaVersion := "0.20.0-RC1"
 
 lazy val why = project
   .in(file("."))
@@ -15,4 +15,3 @@ lazy val why = project
 lazy val shared = project
 lazy val server = project.dependsOn(shared)
 lazy val client = project.in(file("client-ascii")).dependsOn(shared)
-
