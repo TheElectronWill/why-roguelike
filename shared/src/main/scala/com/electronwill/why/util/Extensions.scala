@@ -4,5 +4,5 @@ package com.electronwill.why.util
 import scala.util.Random
 
 object Extensions {
-  def (s: Seq[A]) randomElement[A]: A = s(Random.between(0, s.size))
+  def [A](s: Seq[A]) randomElement: A = s(Random.between(0, s.size))
 }

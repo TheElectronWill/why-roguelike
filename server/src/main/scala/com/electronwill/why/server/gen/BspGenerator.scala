@@ -1,6 +1,9 @@
-package com.electronwill.why.server.gen
+package com.electronwill
+package why.server.gen
 
-import com.electronwill.why.util.Bag
+import collection.Bag
+import why.util.Box
+import why.DungeonLevel
 
 /**
  * Un générateur de niveau basé sur un arbre binaire de partitionnement
