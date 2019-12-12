@@ -1,21 +1,30 @@
 package com.electronwill.why.client
 
-enum Color8 {
+enum StandardColor {
   case Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
 }
-enum Modifier8(val ainsiOffset: Int) {
-  case Bright(0)
-  case Dark(10)
+enum ColorModifier(val codeOffset: Int) {
+  case Bright(60)
+  case Dark(0)
 }
-enum Mode(val ainsiOffset: Int) {
+enum Mode(val codeOffset: Int) {
   case Foreground(30)
   case Background(40)
 }
-enum Color(val ainsi: String) {
-  case Standard(c: Color8, m: Modifier8, at: Mode) extends Color(
-    (at.ainsiOffset + m.ainsiOffset + c.ordinal).toString
+/**
+ * ADT for possible ANSI colors.
+ * @param ansi the ANSI SGR sequence that enables the color
+ * @see http://dotty.epfl.ch/docs/reference/enums/adts.html for the syntax
+ */
+enum Color(val ansi: String) {
+  import AnsiSequences.sgr
+  case Standard(c: StandardColor, cm: ColorModifier, mode: Mode) extends Color(
+    sgr(mode.codeOffset + cm.codeOffset + c.ordinal)
   )
-  case Custom(r: Int, g: Int, b: Int, at: Mode) extends Color(
-    s"${at.ainsiOffset+8};2;$r;$g;$b"
+  case Extended(code256: Int, mode: Mode) extends Color(
+    sgr(mode.codeOffset + 8, 5, code256)
+  )
+  case True(r: Int, g: Int, b: Int, mode: Mode) extends Color(
+    sgr(mode.codeOffset + 8, 2, r, g, b)
   )
 }
