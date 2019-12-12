@@ -24,3 +24,9 @@ this project doesn't use Scala 2.x but Dotty, an experimental research project
 that will become Scala 3, the next major version of scala.
 
 Please see [the Dotty website](https://dotty.epfl.ch) for more information.
+
+## TMP: ANSI ESCAPE SEQUENCES
+https://linux.die.net/man/4/console_codes
+https://unix.stackexchange.com/questions/306716/meaning-of-e0-in-ps1-in-bashrc
+https://shiroyasha.svbtle.com/escape-sequences-a-quick-guide-1
+
