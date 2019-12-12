@@ -1,7 +1,7 @@
 package com.electronwill.why
 
 object Tiles {
-  val Nothing = BasicTile("ø", false)
+  val Void = BasicTile("ø", false)
   val Unknown = BasicTile("?", false)
   val Floor = BasicTile("floor", false)
   val Wall = BasicTile("wall", true)

@@ -1,5 +1,6 @@
 package com.electronwill.why.util
 
+import Vec2i._
 import scala.annotation.alpha
 import scala.reflect.ClassTag
 
@@ -31,4 +32,15 @@ final class Grid[A : ClassTag](val width: Int,
   def isValid(pos: Vec2i): Boolean =
     pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height
 
+  /** Gets the content of the tiles around the position, in the following order:
+    * (up, right, down, left)
+    */
+  def around(pos: Vec2i): (A,A,A,A) = Seq(Up, Right, Down, Left).map(this(pos+_))
+
+  def squareAround(center: Vec2i, radius: Int): Iterable[A] =
+    for
+      x <- center.x-radius to center.x+radius
+      y <- center.y-radius) to center.y+radius
+    yield
+      this(Vec2i(x, y))
 }

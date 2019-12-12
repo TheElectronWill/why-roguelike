@@ -50,7 +50,7 @@ class WalkingGenerator(private val width: Int,
     if (tryExit && pos.squaredDist(spawn) >= squaredMinExitDistance) {
       Tiles.StairsDown
     } else {
-      Tiles.Nothing
+      Tiles.Void
     }
   }
 
