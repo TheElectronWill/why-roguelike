@@ -5,7 +5,8 @@ lazy val why = project
   .settings(
     name := "why-game",
     version := "0.0.1",
-    libraryDependencies += ("com.electronwill" %% "more-collections" % "1.0.0").withDottyCompat(scalaVersion.value)
+    libraryDependencies += ("com.electronwill" %% "more-collections" % "1.0.0").withDottyCompat(scalaVersion.value),
+    libraryDependencies += ("com.electronwill" %% "niol" % "2.0.0").withDottyCompat(scalaVersion.value)
   )
   .aggregate(
     shared,
