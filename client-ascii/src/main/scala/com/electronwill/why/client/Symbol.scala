@@ -4,12 +4,12 @@ import com.electronwill.why.{Tile, Entity}
 import com.electronwill.why.Tiles._
 
 object Symbol {
-  def apply(t: Tile, up: Tile, right: Tile, down: Tile, left: Tile): Char = t match
+  def apply(t: Tile, surrounding: (Tile,Tile,Tile,Tile)): Char = t match
     case Void       => 'ø'
     case Unknown    => '?'
     case Floor      => ' '
     case StairsDown => 'x'
-    case Wall       => (up, right, down, left) match
+    case Wall       => surrounding match
       case (Wall, Wall, Wall, Wall) => '╬'
       case (Wall, Wall, Wall, _) => '╠'
       case (Wall, Wall, _, Wall) => '╩'

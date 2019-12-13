@@ -29,5 +29,6 @@ class BspGenerator(private val width: Int,
       candidates += chosen.a
       candidates += chosen.b
     }
+    null // TODO
   }
 }

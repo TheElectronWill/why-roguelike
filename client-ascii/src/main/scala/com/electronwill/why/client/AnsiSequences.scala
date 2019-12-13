@@ -1,22 +1,25 @@
-package com.electronwill.why.client
+package com.electronwill.why
+package client
+
+import Direction._
 
 /** Terminal control sequences.
   * @author TheElectronWill
   * @see https://en.wikipedia.org/wiki/ANSI_escape_code
   */
 object AnsiSequences {
-  inline val BEL = 0x07.toChar // beeps
-  inline val BS  = 0x08.toChar // backspaces one column
-  inline val HT  = 0x09.toChar // goes to next tab stop
-  inline val LF  = 0x0A.toChar // \n
-  inline val CR  = 0x0D.toChar // \r
-  inline val CAN = 0x18.toChar // Ctrl-X
-  inline val SUB = 0x1A.toChar // Ctrl-Z
-  inline val ESC = 0x1B.toChar // ESC
-  inline val CSI = 0x9B.toChar // mostly equivalent to ESC [
+  inline val BEL: Char = 0x07 // beeps
+  inline val BS: Char = 0x08 // backspaces one column
+  inline val HT: Char = 0x09 // goes to next tab stop
+  inline val LF: Char = 0x0A // \n
+  inline val CR: Char = 0x0D // \r
+  inline val CAN: Char = 0x18 // Ctrl-X
+  inline val SUB: Char = 0x1A // Ctrl-Z
+  inline val ESC: Char = 0x1B // ESC
+  inline val CSI: Char = 0x9B // mostly equivalent to ESC [
 
-  inline def csi(param: String | Int, end: Char) = s"$CSI$param$end"
-  inline def csi(end: String, params: Int*) = params.mkString(CSI.toString, ';', end)
+  inline def csi(end: Char, param: String | Int) = s"$CSI$param$end"
+  inline def csi(end: String, params: Int*) = params.mkString(CSI.toString, ";", end)
 
   // cursor control with CSI sequences
   def move(dir: Direction, n: Int) =
@@ -25,26 +28,26 @@ object AnsiSequences {
       case DOWN  => 'B'
       case RIGHT => 'C'
       case LEFT  => 'D'
-    csi(n, dirChar)
+    csi(dirChar, n)
 
-  def moveLineUp(n: Int) = csi(n, 'E')
-  def moveLineDown(n: Int) = csi(n, 'F')
+  def moveLineUp(n: Int) = csi('E', n)
+  def moveLineDown(n: Int) = csi('F', n)
 
-  def moveToColumn(i: Int) = csi(n, 'G')
-  def moveTo(line: Int, col: Int) = csi('G', line, col)
+  def moveToColumn(col: Int) = csi('G', col)
+  def moveTo(line: Int, col: Int) = csi("G", line, col)
 
-  def scrollUp(n: Int) = csi(n, 'S')
-  def scrollDown(n: Int) = csi(n, 'T')
+  def scrollUp(n: Int) = csi('S', n)
+  def scrollDown(n: Int) = csi('T', n)
 
-  def clearScreenFromCursor = csi(0, 'J')
-  def clearScreenToCursor = csi(1, 'J')
-  def clearScreen = csi(2, 'J')
-  def clearScreenAndScrollback = csi(3, 'J')
+  def clearScreenFromCursor = csi('J', 0)
+  def clearScreenToCursor = csi('J', 1)
+  def clearScreen = csi('J', 2)
+  def clearScreenAndScrollback = csi('J', 3)
 
-  def clearLineFromCursor = csi(0, 'K')
-  def clearLineToCursor = csi(1, 'K')
-  def clearLine = csi(2, 'K')
-  def clearLineAndScrollback = csi(3, 'K')
+  def clearLineFromCursor = csi('K', 0)
+  def clearLineToCursor = csi('K', 1)
+  def clearLine = csi('K', 2)
+  def clearLineAndScrollback = csi('K', 3)
 
   def showCursor = csi("?25", 'h')
   def hideCursor = csi("?25", 'l')
@@ -53,8 +56,8 @@ object AnsiSequences {
   def resetPosition = csi("", 'u')
 
   // SGR (Select Graphic Rendition) codes to set displays attributes
-  inline def sgr(code: String | Int): String = csi(code, 'm')
-  inline def sgr(params: Int*): String = csi('m', params)
+  inline def sgr(code: Int): String = csi('m', code)
+  inline def sgr(params: Int*): String = csi("m", params: _*)
 
   def resetSgr = sgr(0)
   def bold = sgr(1)
