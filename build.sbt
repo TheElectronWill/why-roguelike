@@ -4,9 +4,7 @@ lazy val why = project
   .in(file("."))
   .settings(
     name := "why-game",
-    version := "0.0.1",
-    libraryDependencies += ("com.electronwill" %% "more-collections" % "1.0.0").withDottyCompat(scalaVersion.value),
-    libraryDependencies += ("com.electronwill" %% "niol" % "2.0.0").withDottyCompat(scalaVersion.value)
+    version := "0.0.1"
   )
   .aggregate(
     shared,
@@ -14,6 +12,8 @@ lazy val why = project
     client
   )
 
-lazy val shared = project
+lazy val shared = project.settings(
+  libraryDependencies += ("com.electronwill" %% "niol" % "2.0.1").withDottyCompat(scalaVersion.value)
+)
 lazy val server = project.dependsOn(shared)
 lazy val client = project.in(file("client-ascii")).dependsOn(shared)

@@ -1,7 +1,7 @@
 package com.electronwill
 package why.server.gen
 
-import collection.Bag
+import collection.SimpleBag
 import why.util.Box
 import why.DungeonLevel
 
@@ -22,12 +22,10 @@ class BspGenerator(private val width: Int,
 
   def generate(level: Int): DungeonLevel = {
     val tree = BspTree(Box.positive(width, height))
-    val candidates = Bag[BspNode]()
+    val candidates = SimpleBag[BspNode]()
     candidates += tree.root
     for (x <- 1 to maxSplits if candidates.nonEmpty) {
       // TODO select a random node and split it
-      candidates += chosen.a
-      candidates += chosen.b
     }
     null // TODO
   }
