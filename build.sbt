@@ -13,7 +13,7 @@ lazy val why = project
   )
 
 lazy val shared = project.settings(
-  libraryDependencies += ("com.electronwill" %% "niol" % "2.0.1").withDottyCompat(scalaVersion.value)
+  libraryDependencies += ("com.electronwill" %% "niol" % "2.0.1").withDottyCompat(scalaVersion.value).withSources().withJavadoc()
 )
 lazy val server = project.dependsOn(shared)
 lazy val client = project.in(file("client-ascii")).dependsOn(shared)
