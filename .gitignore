@@ -1,3 +1,6 @@
 # Compiled files and resolved dependencies
 out/
 target/
+.metals/
+.dotty-ide-artifact
+.dotty-ide.json
