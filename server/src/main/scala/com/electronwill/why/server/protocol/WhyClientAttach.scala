@@ -1,7 +1,7 @@
-package com.electronwill.why.server
-package protocol
+package com.electronwill
+package why.server.protocol
 
-import com.electronwill.niol._
+import niol._
 
 class WhyClientAttach  {
 

@@ -1,9 +1,16 @@
-package com.electronwill.why
+package com.electronwill
+package why
+
+import collection.RecyclingIndex
 
 object Tiles {
-  val Void = BasicTile("ø", false)
-  val Unknown = BasicTile("?", false)
-  val Floor = BasicTile("floor", false)
-  val Wall = BasicTile("wall", true)
-  val StairsDown = BasicTile("stairs-down", true)
+  private val index = RecyclingIndex[Tile]()
+
+  private[why] def register(t: Tile): Unit = index += t
+
+  val Void = BasicTile("void", 'ø')
+  val Unknown = BasicTile("?", '?')
+  val Floor = BasicTile("floor", ' ')
+  val Wall = BasicTile("wall", '=', true)
+  val StairsDown = BasicTile("stairs-down", 'x')
 }
