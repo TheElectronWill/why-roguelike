@@ -1,9 +1,11 @@
-package com.electronwill.why.client
+package com.electronwill.why
+package client
 
-import com.electronwill.why.{Tile, Entity}
-import com.electronwill.why.Tiles._
+import gametype._
+import Tiles._
 
 object Symbol {
+  /* TODO this
   def apply(t: Tile, surrounding: (Tile,Tile,Tile,Tile)): Char = t match
     case Void       => 'ø'
     case Unknown    => '?'
@@ -26,5 +28,5 @@ object Symbol {
   def apply(e: Entity): Char = e match
     case _          => '#'
     // TODO case Player => '@'
-
+  */
 }

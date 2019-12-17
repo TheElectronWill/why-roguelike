@@ -4,6 +4,7 @@ package why.server.gen
 import collection.SimpleBag
 import why.util.Box
 import why.DungeonLevel
+import why.gametype._
 
 /**
  * Un générateur de niveau basé sur un arbre binaire de partitionnement
