@@ -1,6 +1,7 @@
 package com.electronwill.why
 
 import util._
+import gametype._
 
 class DungeonLevel(val level: Int,
                    val name: String,
