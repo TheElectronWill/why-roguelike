@@ -1,6 +1,7 @@
-package com.electronwill.why.client.gametype
+package com.electronwill.why
+package client.gametype
 
-/** A client-side TileType holds the type data controlled by the server. */
-final case class TileType(val id: Int, val name: String, val defaultChar: Char, val isBlock: Boolean)
+import gametype.TileTypeData
 
-object TileType extends TypeRegistry[TileType]
+/** A client-side tile registry whose content is controlled by the server (packet S->C #1 IdRegistration). */
+object TileType extends TypeRegistry[TileTypeData]

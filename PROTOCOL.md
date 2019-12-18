@@ -117,7 +117,7 @@ The client first sends a connection request to the server. After a positive resp
 
 1. C->S: connection request (id: 0)
 2. S->C: connection response (id: 0)
-3. *S->C: [OPTIONAL] ids registration (id: 1)*
+3. S->C: ids registration (id: 1)
 4. S->C: terrain data (id: 2)
 5. *game continues*
 
@@ -150,9 +150,9 @@ If `accepted` is false then the server will close the connection without sending
 
 ### 1: IDs registration
 - tileCount: Varint
-- tiles: Array of tuples `(tileId: Varint, character: UShort)`
+- tiles: Array of tuples `(id: Varint, name: String, char: UShort)`
 - entityCount: Varint
-- entities: Array of tuples `(entityId: Varint, character: UShort)`
+- entities: Array of tuples `(id: Varint, name: String, char: UShort)`
 
 ### 2: Terrain data
 - levelId: Short

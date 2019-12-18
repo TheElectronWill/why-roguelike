@@ -1,6 +1,7 @@
-package com.electronwill.why.client.gametype
+package com.electronwill.why
+package client.gametype
+
+import gametype.EntityTypeData
 
 /** A client-side EntityType simply stores type data. */
-final case class EntityType(val id: Int, val name: String, val defaultChar: Char)
-
-object EntityType extends TypeRegistry[EntityType]
+object EntityType extends TypeRegistry[EntityTypeData]
