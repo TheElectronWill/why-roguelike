@@ -4,7 +4,9 @@ package why.protocol
 import niol.{NiolInput, NiolOutput}
 import why.util.Vec2i
 
-/** Extend Niol capabilities to support WHY structures */
+/* Extend Niol capabilities to support WHY structures
+ * Use import why.protocol._ to get that
+ */
 
 def (in: NiolInput) readVector(): Vec2i =
   Vec2i(in.readUnsignedShort, in.readUnsignedShort)

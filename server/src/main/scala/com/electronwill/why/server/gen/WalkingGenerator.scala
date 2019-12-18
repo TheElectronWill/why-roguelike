@@ -2,8 +2,8 @@ package com.electronwill.why
 package server.gen
 
 import scala.util.Random
+import server.gametype._
 import util._
-import util.Extensions._
 import gametype._
 
 /**

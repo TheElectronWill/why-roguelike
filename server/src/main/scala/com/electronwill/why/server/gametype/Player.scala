@@ -1,5 +1,5 @@
 package com.electronwill.why
-package gametype
+package server.gametype
 
 import com.electronwill.niol.network.tcp.ClientAttach
 

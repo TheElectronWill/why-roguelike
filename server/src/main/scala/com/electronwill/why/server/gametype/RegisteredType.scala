@@ -1,4 +1,5 @@
-package com.electronwill.why.gametype
+package com.electronwill.why
+package server.gametype
 
 /** A type of "thing" that has been registered to a registry
   * @tparam B the type of "things" instances

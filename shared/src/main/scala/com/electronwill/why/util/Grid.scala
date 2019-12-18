@@ -1,6 +1,5 @@
 package com.electronwill.why.util
 
-import Extensions._
 import Vec2i._
 import scala.annotation.alpha
 import scala.reflect.ClassTag

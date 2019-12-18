@@ -2,7 +2,6 @@ package com.electronwill.why
 package client
 
 import gametype._
-import Tiles._
 
 object Symbol {
   /* TODO this
