@@ -80,7 +80,7 @@ val firstByte = readByte()
 ```
 
 
-### ColorSetting
+### ColorSetting (not implemented in the protocol yet)
 Sets the background and/or the foreground color (or nothing if colorFlag is 0).
 - colorFlag: Byte = `changeForeground << 1 | changeBackground`
 - foreground: EncodedColor (present only if `changeForeground == 1`)
@@ -150,7 +150,7 @@ If `accepted` is false then the server will close the connection without sending
 
 ### 1: IDs registration
 - tileCount: Varint
-- tiles: Array of tuples `(id: Varint, name: String, char: UShort)`
+- tiles: Array of tuples `(id: Varint, name: String, char: UShort, isBlock: Boolean)`
 - entityCount: Varint
 - entities: Array of tuples `(id: Varint, name: String, char: UShort)`
 
@@ -163,7 +163,8 @@ If `accepted` is false then the server will close the connection without sending
 
 ### 3: Entity spawn
 - entityId: UShort
-- entityType: Vec2i
+- entityType: Varint
+- position: Vec2i
 
 ### 4: Entity delete
 - entityId: UShort

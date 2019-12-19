@@ -20,7 +20,13 @@ abstract class PacketRegistry {
 
   def get(id: Int) = parsers(id)
 
-  def parse(id: Int, in: NiolInput) = parsers(id).readData(in)
+  def parse(in: NiolInput): Packet =
+    val id = in.readUnsignedByte()
+    parsers(id).readData(in)
+
+  def write(p: Packet, out: NiolOutput): Unit =
+    out.writeByte(p.id)
+    p.writeData(out)
 
   def init(): Unit
 }
