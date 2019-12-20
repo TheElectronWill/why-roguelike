@@ -1,5 +1,7 @@
 package com.electronwill.why.util
 
+import scala.util.Random
+
 final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) {
   def xMin: Int = xmin
   def xMax: Int = xmax
@@ -21,6 +23,8 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
   def isTall = height>width
   def isWide = height<width
   def isSquare = height==width
+
+  def randomPoint = Vec2i(Random.between(xMin, xMax), Random.between(yMin, yMax))
 
   override def toString(): String = s"[$xMin, $yMin] x [$xMax, $yMax]"
 }

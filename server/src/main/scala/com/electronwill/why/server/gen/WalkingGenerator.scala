@@ -26,6 +26,7 @@ class WalkingGenerator(private val width: Int,
 
   def generate(level: Int): DungeonLevel = {
     val grid = Grid[Tile](width, height, Tiles.Wall.make())
+    val entities = Grid[Entity](width, height, null)
     val target = (width*height*emptyFactor).toInt
     val spawn = Vec2i.random(Vec2i(0,0), Vec2i(width, height))
     var exit: Vec2i = null
@@ -43,7 +44,7 @@ class WalkingGenerator(private val width: Int,
       // On se déplace ensuite dans une direction aléatoire (mais valide)
       pos = randomValidNeighbour(pos, grid)
     }
-    DungeonLevel(level, levelName(level), spawn, exit, grid)
+    DungeonLevel(level, levelName(level), spawn, exit, grid, entities)
   }
 
   private def generateCell(pos: Vec2i, spawn: Vec2i, tryExit: Boolean): Tile = {
