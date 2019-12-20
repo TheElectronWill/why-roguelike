@@ -25,21 +25,8 @@ class BspNode(var box: Box) {
   /** Creates two sub-boxes by splitting this box in two.
     * The results are saved in `childA` and `childB`.
     */
-  def split(horizontally: Boolean = box.isTall): Unit = {
-    val boxCenter = box.roundedCenter
-    var (regionA, regionB) =
-      if (horizontally) {
-        (
-          Box.intervals(box.xInterval, (boxCenter.y + 1, box.yMax)),
-          Box.intervals(box.xInterval, (box.yMin, boxCenter.y))
-        )
-      } else {
-        (
-          Box.intervals((boxCenter.x + 1, box.xMax), box.yInterval),
-          Box.intervals((box.xMin, boxCenter.x), box.yInterval)
-        )
-      }
-    a = BspNode(regionA)
-    b = BspNode(regionB)
-  }
+  def split(horizontally: Boolean = box.isTall): Unit =
+    val (subA, subB) = box.split(horizontally)
+    a = BspNode(subA)
+    b = BspNode(subB)
 }

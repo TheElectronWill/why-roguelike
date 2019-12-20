@@ -25,6 +25,31 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
   def isSquare = height==width
 
   def randomPoint = Vec2i(Random.between(xMin, xMax), Random.between(yMin, yMax))
+  def randomBorderPoint =
+    val x = Random.between(xMin, xMax)
+    val y =
+      if x == xMin || x == xMax then Random.between(yMin, yMax)
+      else if Random.nextBoolean() then yMin
+      else yMax
+    Vec2i(x, y)
+  
+  /** Creates two sub-boxes by splitting this box in two.
+    * By default the box is cut along its longer axis.
+    * @param horitontally to cut horizontally
+    * @return two sub-boxes  
+    */
+  def split(horizontally: Boolean = isTall): (Box, Box) =
+    val center = roundedCenter
+    if horizontally
+      (
+        Box.intervals(xInterval, (center.y + 1, yMax)),
+        Box.intervals(xInterval, (yMin, center.y))
+      )
+    else
+      (
+        Box.intervals((center.x + 1, xMax), yInterval),
+        Box.intervals((xMin, center.x), yInterval)
+      )
 
   override def toString(): String = s"[$xMin, $yMin] x [$xMax, $yMax]"
 }
