@@ -5,7 +5,7 @@ package server
 import niol._
 import why.util.Vec2i
 
-case class EntitySpawn(entityId: Int, typeId: Int, position: Vec2i) extends Packet(3) {
+case class EntitySpawn(entityId: Int, typeId: Int, position: Vec2i) extends ServerPacket(3) {
   def writeData(out: NiolOutput): Unit =
     out.writeShort(entityId)
     out.writeVarInt(typeId)

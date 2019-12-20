@@ -1,11 +1,10 @@
 package com.electronwill.why.protocol
 package server
 
-/**
- * Packets sent by the server to the client.
- */
-object ServerPackets extends PacketRegistry {
-  override def init() =  
+/** Marker class for packets sent by the server to the client. */
+abstract class ServerPacket(id: Int) extends Packet(id) // abstract for ease of use
+object ServerPacket extends PacketRegistry[ServerPacket] {
+  override def init() =
     register(AreaUpdate)
     register(ConnectionResponse)
     register(EntityAppearance)

@@ -1,10 +1,9 @@
 package com.electronwill.why.protocol
 package client
 
-/**
- * Packets sent by the client to the server.
- */
-object ClientPackets extends PacketRegistry {
+/** Marker trait for packets sent by the client to the server. */
+trait ClientPacket extends Packet
+object ClientPacket extends PacketRegistry[ClientPacket] {
   override def init() =
     register(ConnectionRequest)
     register(PlayerMove)

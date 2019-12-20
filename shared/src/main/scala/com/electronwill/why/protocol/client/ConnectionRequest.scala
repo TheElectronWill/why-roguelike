@@ -6,12 +6,12 @@ import niol._
 import scala.quoted._
 
 case class ConnectionRequest(clientVersion: String, username: String)
-    extends Packet(0) {
+    extends Packet(0) with ClientPacket {
 
   def writeData(out: NiolOutput): Unit =
     out.writeVarString(clientVersion)
     out.writeVarString(username)
-    
+
 }
 object ConnectionRequest extends PacketParser[ConnectionRequest](0) {
   def readData(in: NiolInput) =

@@ -143,6 +143,7 @@ There is no response to this packet, the other party simply takes note of the di
 ## Server to Client
 ### 0: Connection Response
 - accepted: Boolean (true if disconnects because an error occurred)
+- playerEntityId: UShort (so that the player knows its id)
 - serverVersion: String (current version is `0.0.1-alpha`)
 - message: String
 

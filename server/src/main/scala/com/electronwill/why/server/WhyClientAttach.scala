@@ -1,9 +1,10 @@
 package com.electronwill
-package why.server.protocol
+package why.server
 
-import why.protocol.Packet
-import why.protocol.client.{ClientPackets, ConnectionRequest, PlayerMove}
-import niol.buffer.{NiolBuffer, CircularBuffer, storage}
+import why.protocol.server.ServerPacket
+import why.protocol.client.{ClientPacket, ConnectionRequest, PlayerMove}
+import niol.buffer.{CircularBuffer, ExpandingOutput, NiolBuffer}
+import niol.buffer.storage.{BytesStorage, StagedPools}
 import niol.network.tcp.{ServerChannelInfos => SCI, _}
 
 import java.nio.channels.{SelectionKey, SocketChannel}
@@ -21,10 +22,10 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
     * only purpose is to determine the data's length.
     */
   override protected def makeHeader(data: NiolBuffer): NiolBuffer =
-    val buff = CircularBuffer(storage.BytesStorage.allocateHeap(2))
+    val buff = CircularBuffer(BytesStorage.allocateHeap(2))
     buff.writeShort(data.readableBytes) // packetLength
     buff
-  
+
   /** Extracts the packet length from the header.
     * @return the packet length, or -1 if not enough data is available to tell
     */
@@ -35,17 +36,26 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
     * to contain only the "data" part of only one packet.
     */
   override protected def handleData(incomingData: NiolBuffer): Unit =
-    val packet: Try[Packet] = ClientPackets.parse(incomingData)
+    val packet: Try[ClientPacket] = ClientPacket.parse(incomingData)
     packet match
       case Failure(e) =>
         println(s"[ERROR] Error while handling incoming data from client $clientId")
         println(s"[ERROR] $e")
         e.printStackTrace()
-      
+
       case Success(p) =>
         println(s"[INFO] Received packet from client $clientId: $p")
 
+  def sendPacket(packet: ServerPacket, completionHandler: () => Unit = ()=>()) =
+    val output = ExpandingOutput(20, WhyClientAttach.outputBufferPool)
+    ServerPacket.write(packet, output)
+    this.write(output.asBuffer, completionHandler)
+
+  def disconnect() =
+    key.cancel()
+    channel.close()
 }
 object WhyClientAttach {
   private val lastId = AtomicInteger(0)
+  private val outputBufferPool = StagedPools().directStage(100, 10, true).directStage(10000, 5, true).build()
 }

@@ -5,7 +5,7 @@ package server
 import niol._
 import why.util.Vec2i
 
-case class TileUpdate(position: Vec2i, newTypeId: Int) extends Packet(7) {
+case class TileUpdate(position: Vec2i, newTypeId: Int) extends ServerPacket(7) {
   def writeData(out: NiolOutput): Unit =
     out.writeVector(position)
     out.writeVarInt(newTypeId)

@@ -5,7 +5,7 @@ package server
 import niol._
 import why.util.Vec2i
 
-case class AreaUpdate(from: Vec2i, to: Vec2i, tilesIds: Array[Int]) extends Packet(9) {
+case class AreaUpdate(from: Vec2i, to: Vec2i, tilesIds: Array[Int]) extends ServerPacket(9) {
   def writeData(out: NiolOutput): Unit =
     out.writeVector(from)
     out.writeVector(to)

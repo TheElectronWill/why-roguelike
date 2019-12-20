@@ -4,7 +4,7 @@ package server
 
 import niol._
 
-case class EntityDelete(entityId: Int) extends Packet(4) {
+case class EntityDelete(entityId: Int) extends ServerPacket(4) {
   def writeData(out: NiolOutput): Unit =
     out.writeShort(entityId)
 }

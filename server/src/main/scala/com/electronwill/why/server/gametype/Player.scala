@@ -1,8 +1,9 @@
 package com.electronwill.why
 package server.gametype
 
-import com.electronwill.niol.network.tcp.ClientAttach
+import server.WhyClientAttach
 
-class Player(val client: ClientAttach[?]) extends EntityBase('@') {
-  // TODO
+class Player(val client: WhyClientAttach) extends EntityBase('@') {
+  var level: DungeonLevel = _
+  override def id = client.clientId
 }

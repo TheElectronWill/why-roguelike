@@ -74,7 +74,7 @@ abstract class TypeRegistry[I, T <: [+X <: I] =>> RegisteredType[X], Info] {
   final def register[Instance <: I](info: Info, instanceMaker: () => Instance)(given tag: ClassTag[Instance]): T[Instance] =
     val runtimeClass: Class[?] = tag.runtimeClass // Note that runtimeClass doesn't provide any bound
     getOrRegister(info, runtimeClass, instanceMaker)
-  
+
   /** Gets an instance of $iname, given we know its precise type at compile time. */
   final def create[Instance <: I](given tag: ClassTag[Instance]): Instance =
     classMap(tag.runtimeClass).asInstanceOf[T[Instance]].make()
@@ -93,4 +93,7 @@ abstract class TypeRegistry[I, T <: [+X <: I] =>> RegisteredType[X], Info] {
 
   /** Gets a $itype, given its id. */
   final def typeWithId(id: Int): T[I] = idMap(id.toLong)
+
+  /** Gets all the registered types. */
+  final def allTypes: Iterable[T[I]] = idMap.values
 }

@@ -9,4 +9,9 @@ class DungeonLevel(val level: Int,
                    val exitPosition: Vec2i,
                    val terrain: Grid[Tile],
                    val entities: Grid[Entity]) {
+  require(terrain.width == entities.width)
+  require(terrain.height == entities.height)
+
+  def width = terrain.width
+  def height = terrain.height
 }

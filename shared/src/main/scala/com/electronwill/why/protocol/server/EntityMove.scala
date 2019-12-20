@@ -5,7 +5,7 @@ package server
 import niol._
 import why.util.Vec2i
 
-case class EntityMove(entityId: Int, newPosition: Vec2i) extends Packet(5) {
+case class EntityMove(entityId: Int, newPosition: Vec2i) extends ServerPacket(5) {
   def writeData(out: NiolOutput): Unit =
     out.writeShort(entityId)
     out.writeVector(newPosition)

@@ -5,7 +5,7 @@ package server
 import niol._
 import why.util.Vec2i
 
-case class TerrainData(levelId: Short, width: Short, height: Short, tilesIds: Array[Int], spawn: Vec2i) extends Packet(2) {
+case class TerrainData(levelId: Int, width: Int, height: Int, tilesIds: Array[Int], spawn: Vec2i) extends ServerPacket(2) {
   def writeData(out: NiolOutput): Unit =
     out.writeShort(levelId)
     out.writeShort(width)

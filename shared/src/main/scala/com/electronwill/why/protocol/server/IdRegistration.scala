@@ -5,7 +5,7 @@ package server
 import niol._
 import why.gametype._
 
-case class IdRegistration(tiles: Array[TileTypeData], entities: Array[EntityTypeData]) extends Packet(1) {
+case class IdRegistration(tiles: Array[TileTypeData], entities: Array[EntityTypeData]) extends ServerPacket(1) {
   def writeData(out: NiolOutput): Unit =
     out.writeVarInt(tiles.length)
     for t <- tiles do

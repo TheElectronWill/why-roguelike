@@ -7,6 +7,6 @@ abstract class Packet(val id: Int) {
   def writeData(out: NiolOutput): Unit
 }
 
-abstract class PacketParser[P <: Packet](val id: Int) {
+abstract class PacketParser[+P <: Packet](val id: Int) {
   def readData(in: NiolInput): P
 }

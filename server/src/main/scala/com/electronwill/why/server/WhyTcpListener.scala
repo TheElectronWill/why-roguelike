@@ -1,5 +1,5 @@
 package com.electronwill
-package why.server.protocol
+package why.server
 
 import niol.network.tcp.{ServerChannelInfos => SCI, _}
 import java.nio.channels.{SelectionKey, SocketChannel}

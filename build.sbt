@@ -1,5 +1,7 @@
 ThisBuild / scalaVersion := "0.20.0-RC1"
 
+ThisBuild / scalacOptions += "-language:implicitConversions"
+
 lazy val why = project
   .in(file("."))
   .settings(
