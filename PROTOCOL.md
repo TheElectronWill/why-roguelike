@@ -80,7 +80,7 @@ val firstByte = readByte()
 ```
 
 
-### ColorSetting (not implemented in the protocol yet)
+### ColorSetting
 Sets the background and/or the foreground color (or nothing if colorFlag is 0).
 - colorFlag: Byte = `changeForeground << 1 | changeBackground`
 - foreground: EncodedColor (present only if `changeForeground == 1`)
@@ -88,6 +88,7 @@ Sets the background and/or the foreground color (or nothing if colorFlag is 0).
 
 How to decode:
 ```scala
+val colorFlag = readByte()
 val changeForeground = (colorFlag & 2) == 1
 val changeBackground = (colorFlag & 1) == 1
 if changeForeground then

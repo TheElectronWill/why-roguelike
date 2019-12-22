@@ -1,7 +1,8 @@
 package com.electronwill.why
-package client
+package ansi
 
 import Direction._
+import Color._
 
 /** Terminal control sequences.
   * @author TheElectronWill
@@ -68,7 +69,19 @@ object AnsiSequences {
   def crossed = sgr(9)
   def normal = sgr(22)
 
-  def color(c: Color) = c.ansi
-  def fg(c: StandardColor) = Color.Standard(c, ColorModifier.Dark, Mode.Foreground).ansi
-  def bg(c: StandardColor) = Color.Standard(c, ColorModifier.Dark, Mode.Background).ansi
+  def colorFg(c: Color) = c match
+    case Standard(sc, brightness) =>
+      sgr(30 + brightness.codeOffset + sc.ordinal)
+    case Extended(code) =>
+      sgr(38, 5, code)
+    case True(r,g,b) =>
+      sgr(38, 2, r, g, b)
+
+  def colorBg(c: Color) = c match
+    case Standard(sc, brightness) =>
+      sgr(40 + brightness.codeOffset + sc.ordinal)
+    case Extended(code) =>
+      sgr(48, 5, code)
+    case True(r, g, b) =>
+      sgr(48, 2, r, g, b)
 }
