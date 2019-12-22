@@ -45,7 +45,7 @@ class BspGenerator(private val minWidth: Int,
         lastRoom = room
 
     val exit = lastRoom.randomPoint
-    tiles(exit) = Tiles.Stairs
+    tiles(exit) = Tiles.Stairs.make()
 
     // 4: connect the rooms
     connectChilds(tree.root, tiles)
@@ -56,7 +56,7 @@ class BspGenerator(private val minWidth: Int,
       y <- 0 to height
     do
       if tiles.around(x, y).tHas(_.tpe != Tiles.Void)
-        tiles(x, y) = Tiles.Wall
+        tiles(x, y) = Tiles.Wall.make()
 
     // Done!
     DungeonLevel(level, s"level $level", spawn, exit, tiles, entities)
@@ -71,11 +71,11 @@ class BspGenerator(private val minWidth: Int,
     val diff = b-a
     // horizontal (x) part
     for x <- a.x to b.x by diff.x.sign do
-      tiles(x, a.y) = Tiles.Floor
+      tiles(x, a.y) = Tiles.Floor.make()
 
     // vertical (y) part
     for y <- a.y to b.y by diff.y.sign do
-      tiles(b.x, y) = Tiles.Floor
+      tiles(b.x, y) = Tiles.Floor.make()
 
   /** Creates a room of random size inside of the given box. */
   private def makeRoom(node: BspNode, tiles: Grid[Tile]) =
@@ -86,7 +86,7 @@ class BspGenerator(private val minWidth: Int,
       x <- room.xMin to room.xMax
       y <- room.yMin to room.yMax
     do
-      tiles(x, y) = Tiles.Floor
+      tiles(x, y) = Tiles.Floor.make()
 
     node.box = room
     room
