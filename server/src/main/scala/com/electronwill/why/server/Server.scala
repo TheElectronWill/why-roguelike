@@ -52,7 +52,7 @@ object Server {
 
     // Starts the server
     selector.start("server-thread")
-    Thread.sleep(1000)
+    Thread.sleep(10000)
     selector.stop()
 
   /** Disconnects all the clients and stops the TCP server. */

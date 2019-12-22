@@ -47,7 +47,7 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
         println(s"[INFO] Received packet from client $clientId: $p")
 
   def sendPacket(packet: ServerPacket, completionHandler: () => Unit = ()=>()) =
-    val output = ExpandingOutput(20, WhyClientAttach.outputBufferPool)
+    val output = ExpandingOutput(32, WhyClientAttach.outputBufferPool)
     ServerPacket.write(packet, output)
     this.write(output.asBuffer, completionHandler)
 
