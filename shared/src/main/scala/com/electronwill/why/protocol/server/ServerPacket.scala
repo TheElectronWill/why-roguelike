@@ -5,7 +5,6 @@ package server
 abstract class ServerPacket(id: Int) extends Packet(id) // abstract for ease of use
 object ServerPacket extends PacketRegistry[ServerPacket] {
   override def init() =
-    register(AreaUpdate)
     register(ConnectionResponse)
     register(EntityAppearance)
     register(EntityDelete)
