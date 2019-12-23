@@ -4,10 +4,6 @@ package server.gametype
 import gametype._
 import TileType.register
 
-/** @return the TileType associated with this Tile. */
-def [A <: Tile](a: A) tpe: TileType[A] = TileType.typeOf(a.getClass).asInstanceOf[TileType[A]]
-
-
 case class BasicTile(name: String, character: Char) extends Tile {
   def isBlock = false
 }

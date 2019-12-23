@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion := "0.20.0-RC1"
+ThisBuild / scalaVersion := "0.21.0-RC1"
 
 ThisBuild / scalacOptions += "-language:implicitConversions"
 
