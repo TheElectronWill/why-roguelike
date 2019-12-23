@@ -1,8 +1,6 @@
 package com.electronwill.why
 package client
 
-import util.Vec2i
-
 object Client {
   inline val VERSION = "1.0.0-beta1"
 

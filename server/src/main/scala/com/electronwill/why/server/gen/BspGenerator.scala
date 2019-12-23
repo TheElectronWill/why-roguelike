@@ -1,8 +1,8 @@
 package com.electronwill
-package why.server.gen
+package why
+package server.gen
 
 import collection.SimpleBag
-import why.util._
 import why.DungeonLevel
 import why.gametype._
 import why.server.gametype._

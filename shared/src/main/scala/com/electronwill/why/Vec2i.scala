@@ -1,4 +1,4 @@
-package com.electronwill.why.util
+package com.electronwill.why
 
 import scala.math._
 import scala.util.Random

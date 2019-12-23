@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.util.Vec2i
+import why.Vec2i
 
 case class EntitySpawn(entityId: Int, typeId: Int, position: Vec2i) extends ServerPacket(3) {
   def writeData(out: NiolOutput): Unit =

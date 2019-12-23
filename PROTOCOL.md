@@ -189,14 +189,6 @@ If `accepted` is false then the server will close the connection without sending
 - character: UShort
 - color: ColorSetting
 
-### 9: Area update
-
-- from: Vec2i (upper left corner of the area)
-- to: Vec2i (lower right corner of the area)
-- tiles: Array[Varint] (tiles' ids, line by line)
-
-The `tiles` array contains `(to - from).x + (to - from).y` elements.
-
 ### 254: Warning
 
 - message: String

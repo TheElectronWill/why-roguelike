@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.util.Vec2i
+import why.Vec2i
 import why.ansi.ColorSetting
 
 case class TileAppearance(position: Vec2i, newChar: Char, color: ColorSetting) extends ServerPacket(8) {

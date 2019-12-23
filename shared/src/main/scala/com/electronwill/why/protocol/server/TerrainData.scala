@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.util.Vec2i
+import why.Vec2i
 
 case class TerrainData(levelId: Int, width: Int, height: Int, tilesIds: Array[Int], spawn: Vec2i) extends ServerPacket(2) {
   def writeData(out: NiolOutput): Unit =

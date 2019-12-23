@@ -69,6 +69,9 @@ object AnsiSequences {
   def crossed = sgr(9)
   def normal = sgr(22)
 
+  def colorFg(c: StandardColor): String =
+    colorFg(Color.Standard(c, StandardBrightness.Dark))
+
   def colorFg(c: Color) = c match
     case Standard(sc, brightness) =>
       sgr(30 + brightness.codeOffset + sc.ordinal)
@@ -76,6 +79,9 @@ object AnsiSequences {
       sgr(38, 5, code)
     case True(r,g,b) =>
       sgr(38, 2, r, g, b)
+
+  def colorBg(c: StandardColor): String =
+    colorBg(Color.Standard(c, StandardBrightness.Dark))
 
   def colorBg(c: Color) = c match
     case Standard(sc, brightness) =>

@@ -14,7 +14,7 @@ import scala.util.{Try, Success, Failure}
 class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: SelectionKey)
   extends HAttach[WhyClientAttach](sci, channel, key) {
 
-  val clientId = WhyClientAttach.lastId.getAndIncrement() // thread-safe increment
+  val clientId: Int = WhyClientAttach.lastId.getAndIncrement() // thread-safe increment
 
   /** Constructs the packet header for the given data.
     * In WHY's protocol, the header is always 2 bytes for the packet length.

@@ -1,4 +1,4 @@
-package com.electronwill.why.util
+package com.electronwill.why
 
 // See https://dotty.epfl.ch/docs/reference/contextual/extension-methods.html
 import scala.util.Random

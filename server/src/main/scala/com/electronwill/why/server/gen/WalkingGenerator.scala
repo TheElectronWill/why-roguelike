@@ -3,7 +3,6 @@ package server.gen
 
 import scala.util.Random
 import server.gametype._
-import util._
 import gametype._
 
 /**
@@ -70,6 +69,6 @@ class WalkingGenerator(private val width: Int,
 }
 
 object WalkingGenerator {
-  import com.electronwill.why.util.Vec2i._
+  import com.electronwill.why.Vec2i._
   private val Directions = Seq(Up, Right, Down, Left)
 }

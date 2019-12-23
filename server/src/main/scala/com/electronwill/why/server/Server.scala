@@ -1,5 +1,6 @@
 package com.electronwill
-package why.server
+package why
+package server
 
 import niol.network.tcp._ // com.electronwill.niol
 import niol.buffer.storage._
@@ -7,7 +8,6 @@ import niol.buffer.storage._
 import gametype._
 import why.gametype._
 import why.DungeonLevel
-import why.util.Vec2i
 import why.protocol._
 import why.protocol.server._
 import why.protocol.client._
@@ -77,7 +77,7 @@ object Server {
           // 1: accept the connection
           println(s"[INFO] New client connected with id ${client.clientId}")
           val player = Player(client)
-          val welcomePacket = ConnectionResponse(true, player.id, VERSION, "Welcome to WHY - by TheElectronWill")
+          val welcomePacket = ConnectionResponse(true, player.id.id, VERSION, "Welcome to WHY - by TheElectronWill")
           client.sendPacket(welcomePacket)
 
           // 2: send the types data
@@ -92,12 +92,12 @@ object Server {
 
           // 4: register the player
           playersByClient(client.clientId) = player
-          gameLevel.entities(gameLevel.spawnPosition) = player
+          gameLevel.addEntity(player, gameLevel.spawnPosition)
           player.position = gameLevel.spawnPosition
           player.level = gameLevel
 
           // 5: notify the other players (in the same level)
-          val spawnPacket = EntitySpawn(player.id, Entities.Player.id, player.position)
+          val spawnPacket = EntitySpawn(player.id.id, Entities.Player.id, player.position)
           levelMates(player).foreach(_.client.sendPacket(spawnPacket))
 
       case PlayerMove(destination: Vec2i) =>
@@ -110,7 +110,7 @@ object Server {
             if player.level.terrain(destination).tpe == Tiles.Stairs
               // handle stairs (go to the next level)
               // remove the player from this level for those who still are there
-              val despawnPacket = EntityDelete(player.id)
+              val despawnPacket = EntityDelete(player.id.id)
               levelMates(player).foreach(_.client.sendPacket(despawnPacket))
               val levelId = player.level.level
               player.level = null // the player has no level until the new one is ready
@@ -122,15 +122,15 @@ object Server {
               sendTerrainData(nextLevel, client)
 
               // notify the players of the next level
-              val spawnPacket = EntitySpawn(player.id, Entities.Player.id, player.position)
+              val spawnPacket = EntitySpawn(player.id.id, Entities.Player.id, player.position)
               levelMates(player).foreach(_.client.sendPacket(spawnPacket))
             else
               // handle non-stairs (move in the same level)
-              player.level.entities.move(player.position, destination)
+              player.level.moveEntity(player.id, destination)
               player.position = destination
 
               // notify the other players
-              val movePacket = EntityMove(player.id, destination)
+              val movePacket = EntityMove(player.id.id, destination)
               levelMates(player).foreach(_.client.sendPacket(movePacket))
 
   def sendTerrainData(gameLevel: DungeonLevel, client: WhyClientAttach) =

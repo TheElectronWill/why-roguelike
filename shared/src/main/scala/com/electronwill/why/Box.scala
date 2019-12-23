@@ -1,4 +1,4 @@
-package com.electronwill.why.util
+package com.electronwill.why
 
 import scala.util.Random
 
@@ -32,11 +32,11 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
       else if Random.nextBoolean() then yMin
       else yMax
     Vec2i(x, y)
-  
+
   /** Creates two sub-boxes by splitting this box in two.
     * By default the box is cut along its longer axis.
     * @param horitontally to cut horizontally
-    * @return two sub-boxes  
+    * @return two sub-boxes
     */
   def split(horizontally: Boolean = isTall): (Box, Box) =
     val center = roundedCenter

@@ -2,7 +2,7 @@ package com.electronwill
 package why.protocol
 
 import niol.{NiolInput, NiolOutput}
-import why.util.Vec2i
+import why.Vec2i
 import why.ansi._
 
 /* Extend Niol capabilities to support WHY structures

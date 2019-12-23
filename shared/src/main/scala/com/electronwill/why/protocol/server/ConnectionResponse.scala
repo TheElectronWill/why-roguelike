@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.util.Vec2i
+import why.Vec2i
 
 case class ConnectionResponse(accept: Boolean, playerEntityId: Int, serverVersion: String, message: String) extends ServerPacket(0) {
   def writeData(out: NiolOutput): Unit =

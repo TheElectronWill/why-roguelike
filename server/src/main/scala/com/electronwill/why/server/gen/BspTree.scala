@@ -1,6 +1,6 @@
 package com.electronwill.why.server.gen
 
-import com.electronwill.why.util.Box
+import com.electronwill.why.Box
 
 class BspTree(region: Box) {
   val root = BspNode(region)

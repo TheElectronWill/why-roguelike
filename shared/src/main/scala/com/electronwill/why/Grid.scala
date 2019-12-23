@@ -1,4 +1,4 @@
-package com.electronwill.why.util
+package com.electronwill.why
 
 import Vec2i._
 import scala.annotation.alpha
