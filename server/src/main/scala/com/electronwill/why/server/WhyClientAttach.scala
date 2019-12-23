@@ -1,6 +1,7 @@
 package com.electronwill
 package why.server
 
+import why.Logger
 import why.protocol.server.ServerPacket
 import why.protocol.client.{ClientPacket, ConnectionRequest, PlayerMove}
 import niol.buffer.{CircularBuffer, ExpandingOutput, NiolBuffer}
@@ -39,12 +40,11 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
     val packet: Try[ClientPacket] = ClientPacket.parse(incomingData)
     packet match
       case Failure(e) =>
-        println(s"[ERROR] Error while handling incoming data from client $clientId")
-        println(s"[ERROR] $e")
+        Logger.error(s"Error while handling incoming data from client $clientId", e)
         e.printStackTrace()
 
       case Success(p) =>
-        println(s"[INFO] Received packet from client $clientId: $p")
+        Logger.info(s"Received packet from client $clientId: $p")
 
   def sendPacket(packet: ServerPacket, completionHandler: () => Unit = ()=>()) =
     val output = ExpandingOutput(32, WhyClientAttach.outputBufferPool)

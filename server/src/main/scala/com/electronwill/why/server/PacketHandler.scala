@@ -11,7 +11,7 @@ import why.protocol.server._
 object PacketHandler {
   def handlePacket(p: ClientPacket, client: WhyClientAttach) =
     // TODO register listeners (and use separate files for them) instead of putting all the code in one big match/case
-    println(s"[INFO] Received packet from client ${client.clientId}: $p")
+    Logger.info(s"Received packet from client ${client.clientId}: $p")
     p match
       case ConnectionRequest(clientVersion, username) =>
         if clientVersion.split(".")(0) != Server.VERSION_MAJOR
@@ -21,7 +21,7 @@ object PacketHandler {
           client.sendPacket(byebye, () => client.disconnect())
         else
           // 1: accept the connection
-          println(s"[INFO] New client connected with id ${client.clientId}")
+          Logger.info(s"New client connected with id ${client.clientId}")
           val player = Player(client)
           val welcomePacket = ConnectionResponse(true, player.id.id, Server.VERSION, "Welcome to WHY - by TheElectronWill")
           client.sendPacket(welcomePacket)
@@ -50,7 +50,7 @@ object PacketHandler {
       case PlayerMove(destination: Vec2i) =>
         Server.getPlayer(client) match
           case None =>
-            println("[ERROR] Unexpected game packet, expected ConnectionRequest.")
+            Logger.error("Unexpected packet PlayerMove, expected ConnectionRequest.")
             val byebye = Disconnect(true, "Unexpected packet PlayerMove, please send ConnectionRequest first!")
             client.sendPacket(byebye, ()=>client.disconnect())
           case Some(player) =>

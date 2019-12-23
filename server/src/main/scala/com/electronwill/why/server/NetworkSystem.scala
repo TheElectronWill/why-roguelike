@@ -16,8 +16,8 @@ class NetworkSystem(val port: Int) {
   def start(): Unit =
     // Creates the ScalableSelector
     // It will listen to incoming packets and process outgoing ones.
-    val onStart = () => println("Server started")
-    val onStop = () => println("Server stopped")
+    val onStart = () => Logger.info("Server started")
+    val onStop = () => Logger.info("Server stopped")
     val onError = (e: Exception) => {
       Logger.error("Error in server's NetworkSystem", e)
       false // false to stop the server on error, true to continue

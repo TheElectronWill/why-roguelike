@@ -10,17 +10,16 @@ class PacketReader(private val in: NiolInput) extends Runnable {
   @volatile var running = true
 
   def run(): Unit =
-    println("[INFO] Client networking thread started.")
+    Logger.info("Client networking thread started.")
     while running do
       val packetLength = in.readUnsignedShort()
       val packet: Try[ServerPacket] = ServerPacket.parse(in)
       packet match
         case Failure(e) =>
-          println(s"[ERROR] Error while handling incoming data from the server.")
-          println(s"[ERROR] $e")
+          Logger.error(s"Error while handling incoming data from the server.", e)
           e.printStackTrace()
 
         case Success(p) =>
-          println(s"[INFO] Received a packet from the server: $p")
+          Logger.info(s"Received a packet from the server: $p")
           PacketHandler.handle(p)
 }
