@@ -5,14 +5,15 @@ package server
 import niol._
 import why.Vec2i
 import why.ansi.ColorSetting
+import why.gametype.EntityId
 
-case class EntityAppearance(entityId: Int, newChar: Char, color: ColorSetting) extends ServerPacket(6) {
+case class EntityAppearance(entityId: EntityId, newChar: Char, color: ColorSetting) extends ServerPacket(6) {
   def writeData(out: NiolOutput): Unit =
-    out.writeShort(entityId)
+    out.writeShort(entityId.id)
     out.writeChar(newChar)
     out.writeColorSetting(color)
 }
 object EntityAppearance extends PacketParser[EntityAppearance](6) {
   def readData(in: NiolInput) =
-    EntityAppearance(in.readUnsignedShort(), in.readChar(), in.readColorSetting())
+    EntityAppearance(EntityId(in.readUnsignedShort()), in.readChar(), in.readColorSetting())
 }

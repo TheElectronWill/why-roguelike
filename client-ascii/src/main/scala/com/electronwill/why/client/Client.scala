@@ -4,7 +4,7 @@ package client
 object Client {
   inline val VERSION = "1.0.0-beta1"
 
-  var level: DungeonLevel = _
+  var level: ClientDungeonLevel = _
   var playerId: Int = -1
   var playerPosition = Vec2i.Zero
 

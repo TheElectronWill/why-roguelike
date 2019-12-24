@@ -1,11 +1,15 @@
 package com.electronwill.why
 package gametype
 
-/** A game entity. */
-trait Entity {
-  def position: Vec2i
+import ansi.ColorSetting
 
-  def name: String
-  def character: Char
-  def id: EntityId
+/** A game entity. */
+abstract class Entity(var name: String, var character: Char) {
+  var position: Vec2i = _
+  var customColor = ColorSetting(None, None)
+
+  protected var _id: EntityId = EntityId(-1)
+
+  def id: EntityId = _id
+  def level: DungeonLevel[?, ?]
 }

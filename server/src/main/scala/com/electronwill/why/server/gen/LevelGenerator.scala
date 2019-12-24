@@ -1,7 +1,6 @@
-package com.electronwill.why.server.gen
-
-import com.electronwill.why.DungeonLevel
+package com.electronwill.why.server
+package gen
 
 trait LevelGenerator {
-  def generate(level: Int): DungeonLevel
+  def generate(level: Int): ServerDungeonLevel
 }

@@ -3,12 +3,13 @@ package why.protocol
 package server
 
 import niol._
+import why.gametype.EntityId
 
-case class EntityDelete(entityId: Int) extends ServerPacket(4) {
+case class EntityDelete(entityId: EntityId) extends ServerPacket(4) {
   def writeData(out: NiolOutput): Unit =
-    out.writeShort(entityId)
+    out.writeShort(entityId.id)
 }
 object EntityDelete extends PacketParser[EntityDelete](4) {
   def readData(in: NiolInput) =
-    EntityDelete(in.readUnsignedShort())
+    EntityDelete(EntityId(in.readUnsignedShort()))
 }

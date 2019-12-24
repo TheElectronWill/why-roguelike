@@ -2,6 +2,7 @@ package com.electronwill.why
 package server.gen
 
 import gametype._
+import server.ServerDungeonLevel
 import server.gametype._
 import scala.util.Random
 
@@ -19,10 +20,9 @@ class LabyrinthGenerator(private val width: Int,
         p = bounds.randomBorderPoint
       p
     val tiles = Grid[Tile](width, height, Tiles.Void.make())
-    val entities = Grid[Entity](width, height, null)
     labyrinth(bounds, tiles)
     tiles(end) = Tiles.Stairs.make()
-    DungeonLevel(level, s"level $level", start, end, tiles, entities)
+    ServerDungeonLevel(level, s"level $level", start, end, tiles)
 
   private def labyrinth(box: Box, tiles: Grid[Tile]): Unit =
     val center = box.roundedCenter

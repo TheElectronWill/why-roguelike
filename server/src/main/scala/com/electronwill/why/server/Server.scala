@@ -23,7 +23,7 @@ object Server {
   val config = FileConfig.builder("server-config.toml").defaultResource("/default-config.toml").sync().build()
   config.load()
 
-  private val levels = LongMap[DungeonLevel]() // int -> loaded level
+  private val levels = LongMap[ServerDungeonLevel]() // int -> loaded level
   private val generator = gen.BspGenerator(50, 40, 1000, 1000, 2) // generates levels
   private val playersByClient = LongMap[Player]() // client id -> player entity
 
@@ -31,7 +31,7 @@ object Server {
   val message: String = config.get("motd")
   val network = NetworkSystem(port)
 
-  def getOrCreateLevel(n: Int): DungeonLevel =
+  def getOrCreateLevel(n: Int): ServerDungeonLevel =
     val generator: gen.WalkingGenerator = null
     levels.getOrElseUpdate(n.toLong, generator.generate(n))
 

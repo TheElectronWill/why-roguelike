@@ -4,11 +4,6 @@ package server.gametype
 import gametype._
 import EntityType.register
 
-abstract class EntityBase(val character: Char) extends Entity {
-  var position: Vec2i = Vec2i.Zero
-  var name: String = toString
-}
-
 object Entities {
   // BACKLOG: create more entities
 

@@ -1,7 +1,7 @@
 package com.electronwill.why
 package client
 
-class Terminal {
-
+/** Terminal UI */
+class TUI {
 
 }

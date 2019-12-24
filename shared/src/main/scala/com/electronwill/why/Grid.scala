@@ -22,15 +22,15 @@ final class Grid[A : ClassTag](val width: Int,
   def update(pos: Vec2i, t: A): Unit = storage(idx(pos)) = t
   def update(x: Int, y: Int, t: A): Unit = storage(idx(x, y)) = t
 
+  def remove(pos: Vec2i): Unit = update(pos, default)
+  def remove(x: Int, y: Int): Unit = update(x, y, default)
+
   def move(pos: Vec2i, to: Vec2i): Unit = {
     val origin = idx(pos)
     val dest = idx(to)
     storage(dest) = storage(origin)
     storage(origin) = default
   }
-
-  @alpha("remove")
-  def -= (pos: Vec2i): Unit = storage(idx(pos)) = default
 
   def isValid(pos: Vec2i): Boolean =
     pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height

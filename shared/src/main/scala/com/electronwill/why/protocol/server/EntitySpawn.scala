@@ -4,14 +4,15 @@ package server
 
 import niol._
 import why.Vec2i
+import why.gametype.EntityId
 
-case class EntitySpawn(entityId: Int, typeId: Int, position: Vec2i) extends ServerPacket(3) {
+case class EntitySpawn(entityId: EntityId, typeId: Int, position: Vec2i) extends ServerPacket(3) {
   def writeData(out: NiolOutput): Unit =
-    out.writeShort(entityId)
+    out.writeShort(entityId.id)
     out.writeVarInt(typeId)
     out.writeVector(position)
 }
 object EntitySpawn extends PacketParser[EntitySpawn](3) {
   def readData(in: NiolInput) =
-    EntitySpawn(in.readUnsignedShort(), in.readVarInt(), in.readVector())
+    EntitySpawn(EntityId(in.readUnsignedShort()), in.readVarInt(), in.readVector())
 }

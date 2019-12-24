@@ -1,4 +1,4 @@
 package com.electronwill.why.client
 
-@main def why(serverIP: String, serverPort: Int): Unit =
+@main def whyClient(serverIP: String, serverPort: Int): Unit =
   Client.connect(serverIP, serverPort)

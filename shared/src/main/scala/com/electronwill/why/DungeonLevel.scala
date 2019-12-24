@@ -4,35 +4,30 @@ package why
 import gametype._
 import collection.RecyclingIndex
 import scala.collection.mutable.LongMap
+import scala.reflect.ClassTag
 
-class DungeonLevel(val level: Int,
-                   val name: String,
-                   val spawnPosition: Vec2i,
-                   val exitPosition: Vec2i,
-                   val terrain: Grid[Tile],
-                   private val entityGrid: Grid[Entity]) {
-  require(terrain.width == entityGrid.width)
-  require(terrain.height == entityGrid.height)
+abstract class DungeonLevel[T <: Tile, E >: Null <: Entity : ClassTag](
+    val number: Int,
+    val name: String,
+    val spawnPosition: Vec2i,
+    val exitPosition: Vec2i,
+    val terrain: Grid[T],
+  ) {
 
-  private var entityIds = RecyclingIndex[Entity]()
+  protected val entityGrid = Grid[E](width, height, null)
+  protected val entityIds = RecyclingIndex[E]()
 
-  def width = terrain.width
-  def height = terrain.height
+  def width: Int = terrain.width
+  def height: Int = terrain.height
 
-  def getEntity(id: EntityId): Entity = entityIds(id.id)
+  def getEntity(id: EntityId): Option[E] = entityIds.get(id.id)
+  def getEntity(at: Vec2i): Option[E] = Option(entityGrid(at))
 
-  def addEntity(e: Entity, at: Vec2i): EntityId =
-    entityGrid(at) = e
-    EntityId(entityIds += e)
+  def moveEntity(e: E, to: Vec2i): Unit =
+    entityGrid.move(e.position, to)
+    e.position = to
 
-  def deleteEntity(id: EntityId): Unit =
-    val entity = getEntity(id)
-    entityGrid(entity.position) = null
-    entityIds.remove(id.id)
+  def addEntity(e: E, at: Vec2i): Unit
 
-  def moveEntity(id: EntityId, to: Vec2i): Unit =
-    val entity = getEntity(id)
-    entityGrid.move(entity.position, to)
-
-  def getEntity(at: Vec2i) = Option(entityGrid(at))
+  def deleteEntity(e: E): Unit
 }

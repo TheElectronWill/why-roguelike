@@ -1,11 +1,11 @@
 package com.electronwill
-package why
-package server.gen
+package why.server.gen
 
 import collection.SimpleBag
-import why.DungeonLevel
+import why._
 import why.gametype._
 import why.server.gametype._
+import why.server.ServerDungeonLevel
 
 import scala.util.Random
 
@@ -24,11 +24,10 @@ class BspGenerator(private val minWidth: Int,
                    private val minSplits: Int)
   extends LevelGenerator {
 
-  def generate(level: Int): DungeonLevel =
+  def generate(level: Int): ServerDungeonLevel =
     // 1: prepare the space
     val (width, height) = terrainSize(level)
     val tiles = Grid[Tile](width, height, Tiles.Void.make())
-    val entities = Grid[Entity](width, height, null)
 
     // 2: divide the space
     val tree = BspTree(Box.positive(width, height))
@@ -59,7 +58,7 @@ class BspGenerator(private val minWidth: Int,
         tiles(x, y) = Tiles.Wall.make()
 
     // Done!
-    DungeonLevel(level, s"level $level", spawn, exit, tiles, entities)
+    ServerDungeonLevel(level, s"level $level", spawn, exit, tiles)
 
   private def connectChilds(n: BspNode, tiles: Grid[Tile]): Unit =
     if n.isLeaf then return

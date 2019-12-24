@@ -7,5 +7,6 @@ object ClientPacket extends PacketRegistry[ClientPacket] {
   override def init() =
     register(ConnectionRequest)
     register(PlayerMove)
+    register(Warning)
     register(Disconnect)
 }

@@ -2,6 +2,7 @@ package com.electronwill.why
 package server.gen
 
 import scala.util.Random
+import server.ServerDungeonLevel
 import server.gametype._
 import gametype._
 
@@ -23,9 +24,8 @@ class WalkingGenerator(private val width: Int,
 
   private val squaredMinExitDistance = minExitDistance*minExitDistance
 
-  def generate(level: Int): DungeonLevel = {
+  def generate(level: Int) = {
     val grid = Grid[Tile](width, height, Tiles.Wall.make())
-    val entities = Grid[Entity](width, height, null)
     val target = (width*height*emptyFactor).toInt
     val spawn = Vec2i.random(Vec2i(0,0), Vec2i(width, height))
     var exit: Vec2i = null
@@ -43,7 +43,7 @@ class WalkingGenerator(private val width: Int,
       // On se déplace ensuite dans une direction aléatoire (mais valide)
       pos = randomValidNeighbour(pos, grid)
     }
-    DungeonLevel(level, levelName(level), spawn, exit, grid, entities)
+    ServerDungeonLevel(level, levelName(level), spawn, exit, grid)
   }
 
   private def generateCell(pos: Vec2i, spawn: Vec2i, tryExit: Boolean): Tile = {

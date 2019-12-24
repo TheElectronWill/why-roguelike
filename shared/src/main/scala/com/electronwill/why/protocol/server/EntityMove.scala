@@ -4,13 +4,14 @@ package server
 
 import niol._
 import why.Vec2i
+import why.gametype.EntityId
 
-case class EntityMove(entityId: Int, newPosition: Vec2i) extends ServerPacket(5) {
+case class EntityMove(entityId: EntityId, newPosition: Vec2i) extends ServerPacket(5) {
   def writeData(out: NiolOutput): Unit =
-    out.writeShort(entityId)
+    out.writeShort(entityId.id)
     out.writeVector(newPosition)
 }
 object EntityMove extends PacketParser[EntityMove](5) {
   def readData(in: NiolInput) =
-    EntityMove(in.readUnsignedShort(), in.readVector())
+    EntityMove(EntityId(in.readUnsignedShort()), in.readVector())
 }

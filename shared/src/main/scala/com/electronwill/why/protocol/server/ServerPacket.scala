@@ -14,7 +14,7 @@ object ServerPacket extends PacketRegistry[ServerPacket] {
     register(TerrainData)
     register(TileAppearance)
     register(TileUpdate)
-    register(Warning)
 
+    register(Warning)
     register(Disconnect)
 }

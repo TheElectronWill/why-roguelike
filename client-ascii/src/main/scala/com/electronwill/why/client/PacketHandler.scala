@@ -1,8 +1,11 @@
 package com.electronwill
-package why
-package client
+package why.client
 
-import protocol.server._
+import gametype._
+import why.gametype.EntityId
+import why.protocol.Warning
+import why.protocol.server._
+import why.Logger
 
 object PacketHandler {
   def handle(p: ServerPacket): Unit = p match
@@ -14,8 +17,36 @@ object PacketHandler {
       else
         Logger.info(s"Connection accepted by the server: $msg")
         Client.playerId = playerId
+
     case EntityAppearance(entityId, char, color) =>
-      // TODO
+      withEntity(entityId, e => {
+        Logger.info(s"Set appearance of entity #${entityId}")
+        e.character = char
+        e.customColor = color
+      })
+
     case EntityDelete(entityId) =>
-      // TODO
+      withEntity(entityId, e => {
+        Logger.info(s"Removed entity #${e.id} of type ${e.tpe}")
+        Client.level.deleteEntity(e)
+      })
+
+    case EntityMove(entityId, dst) =>
+      withEntity(entityId, Client.level.moveEntity(_, dst))
+
+    case EntitySpawn(entityId, typeId, position) =>
+      val tpe = EntityType.typeWithId(typeId)
+      val entity = ClientEntity(entityId, tpe)
+
+  private def withEntity(entityId: EntityId, f: ClientEntity => Unit) =
+    val entity = Client.level.getEntity(entityId).asInstanceOf[ClientEntity]
+    if entity == null
+      noSuchEntity(entityId)
+    else
+      f(entity)
+
+  private def noSuchEntity(entityId: EntityId) =
+    val msg = s"No entity with id ${entityId}"
+    Logger.error(msg)
+    Client.network.send(Warning(msg))
 }

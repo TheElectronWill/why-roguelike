@@ -44,7 +44,7 @@ object PacketHandler {
           player.level = level
 
           // 5: notify the other players (in the same level)
-          val spawnPacket = EntitySpawn(player.id.id, Entities.Player.id, player.position)
+          val spawnPacket = EntitySpawn(player.id, Entities.Player.id, player.position)
           Server.levelMates(player).foreach(_.client.sendPacket(spawnPacket))
 
       case PlayerMove(destination: Vec2i) =>
@@ -57,9 +57,9 @@ object PacketHandler {
             if player.level.terrain(destination).tpe == Tiles.Stairs
               // handle stairs (go to the next level)
               // remove the player from this level for those who still are there
-              val despawnPacket = EntityDelete(player.id.id)
+              val despawnPacket = EntityDelete(player.id)
               Server.levelMates(player).foreach(_.client.sendPacket(despawnPacket))
-              val levelId = player.level.level
+              val levelId = player.level.number
               player.level = null // the player has no level until the new one is ready
 
               // generates (if needed) the next level and moves the player to it
@@ -69,28 +69,29 @@ object PacketHandler {
               sendTerrainData(nextLevel, client)
 
               // notify the players of the next level
-              val spawnPacket = EntitySpawn(player.id.id, Entities.Player.id, player.position)
+              val spawnPacket = EntitySpawn(player.id, Entities.Player.id, player.position)
               Server.levelMates(player).foreach(_.client.sendPacket(spawnPacket))
             else
               // handle non-stairs (move in the same level)
-              player.level.moveEntity(player.id, destination)
+              player.level.moveEntity(player, destination)
               player.position = destination
 
               // notify the other players
-              val movePacket = EntityMove(player.id.id, destination)
+              val movePacket = EntityMove(player.id, destination)
               Server.levelMates(player).foreach(_.client.sendPacket(movePacket))
 
-  def sendTerrainData(gameLevel: DungeonLevel, client: WhyClientAttach) =
-    val (width, height) = (gameLevel.width, gameLevel.height)
-    val spawn = gameLevel.spawnPosition
+  def sendTerrainData(level: ServerDungeonLevel, client: WhyClientAttach) =
+    val (width, height) = (level.width, level.height)
+    val spawn = level.spawnPosition
+    val exit = level.exitPosition
 
     val tilesIds = new Array[Int](width * height)
     for
       x <- 0 to width
       y <- 0 to height
     do
-      tilesIds(width*x + y) = gameLevel.terrain(x, y).tpe.id
+      tilesIds(width*x + y) = level.terrain(x, y).tpe.id
 
-    val terrainData = TerrainData(1, width, height, tilesIds, spawn)
+    val terrainData = TerrainData(level.number, width, height, tilesIds, spawn, exit)
     client.sendPacket(terrainData)
 }
