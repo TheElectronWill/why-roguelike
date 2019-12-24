@@ -3,6 +3,8 @@ package com.electronwill.why
 import ansi._
 
 object Logger {
+  def ok(msg: String) = log(AnsiSequences.colorFg(StandardColor.Green), " OK ", msg)
+
   def info(msg: String) = log(AnsiSequences.resetSgr, "INFO", msg)
 
   def warn(msg: String) = log(AnsiSequences.colorFg(StandardColor.Yellow), "WARN", msg)
@@ -13,9 +15,9 @@ object Logger {
     err.printStackTrace()
 
   private def log(ansi: String, severity: String, msg: String) =
-    print(ansi)
-    print("[")
-    print(severity)
-    print("] ")
-    println(msg)
+    System.err.print(ansi)
+    System.err.print("[")
+    System.err.print(severity)
+    System.err.print("] ")
+    System.err.println(msg)
 }

@@ -5,7 +5,7 @@ import gametype._
 import why.gametype.EntityId
 import why.protocol.Warning
 import why.protocol.server._
-import why.Logger
+import why.{Logger, Grid}
 
 object PacketHandler {
   def handle(p: ServerPacket): Unit = p match
@@ -37,6 +37,38 @@ object PacketHandler {
     case EntitySpawn(entityId, typeId, position) =>
       val tpe = EntityType.typeWithId(typeId)
       val entity = ClientEntity(entityId, tpe)
+      Client.level.addEntity(entity, position)
+
+    case IdRegistration(tiles, entities) =>
+      Logger.info(s"Registering ${tiles.length} types of tiles and ${entities.length} types of entities.")
+
+      for t <- tiles do
+        TileType.register(t.id, t)
+        Logger.info(s"-> $t")
+
+      for t <- entities do
+        EntityType.register(t.id, t)
+        Logger.info(s"-> $t")
+
+      Logger.ok("Types registered!")
+
+    case TerrainData(levelId, levelName, width, height, tilesIds, spawn, exit) =>
+      val terrain = Grid[ClientTile](width, height, ClientTile(TileType.typeWithId(0)))
+      for (id, i) <- tilesIds.zipWithIndex do
+        val x = i % width
+        val y = i / width
+        terrain(x, y) = ClientTile(TileType.typeWithId(id))
+      Client.level = ClientDungeonLevel(levelId, levelName, spawn, exit, terrain)
+      Logger.ok(s"Dungeon level set to $levelName")
+
+    case TileAppearance(position, newChar, newColor) =>
+      val tile = Client.level.terrain(position)
+      tile.character = newChar
+      tile.customColor = newColor
+
+    case TileUpdate(position, newTypeId) =>
+      val tile = Client.level.terrain(position)
+      tile.tpe = TileType.typeWithId(newTypeId)
 
   private def withEntity(entityId: EntityId, f: ClientEntity => Unit) =
     val entity = Client.level.getEntity(entityId).asInstanceOf[ClientEntity]

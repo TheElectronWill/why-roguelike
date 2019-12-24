@@ -12,7 +12,7 @@ class WhyTcpListener extends TcpListener[WhyClientAttach] {
    * so that we can keep track of who is who.
    */
   override def onAccept(sci: SCI[WhyClientAttach], c: SocketChannel, k: SelectionKey): WhyClientAttach =
-    Logger.info(s"Accepted client ${c.getLocalAddress}")
+    Logger.info(s"Accepted client ${c.getRemoteAddress}")
     val attach = new WhyClientAttach(sci, c, k)
     Logger.info(s"Assigned client to id ${attach.clientId}")
     attach
@@ -20,5 +20,6 @@ class WhyTcpListener extends TcpListener[WhyClientAttach] {
   /** Called when a client disconnects. Nothing to do here. */
   override def onDisconnect(clientAttach: WhyClientAttach) =
     Logger.info(s"Client ${clientAttach.clientId} disconnected")
+    Server.removePlayer(clientAttach)
 
 }

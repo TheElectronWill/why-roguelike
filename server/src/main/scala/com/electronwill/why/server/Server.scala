@@ -31,8 +31,14 @@ object Server {
   val message: String = config.get("motd")
   val network = NetworkSystem(port)
 
+  def registerTypes(): Unit =
+    Logger.info("Registering types...")
+    Logger.info(s"Tiles.Void is ${Tiles.Void}")
+    Logger.info("(Skipped other tiles)")
+    Logger.info(s"Entities.Player is '${Entities.Player.defaultChar}'")
+    Logger.ok(s"Types registered: ${TileType.allTypes.size} tiles and ${EntityType.allTypes.size} entities")
+
   def getOrCreateLevel(n: Int): ServerDungeonLevel =
-    val generator: gen.WalkingGenerator = null
     levels.getOrElseUpdate(n.toLong, generator.generate(n))
 
   /** Gets all the players in the same level as this player */
@@ -46,4 +52,12 @@ object Server {
 
   def getPlayer(client: WhyClientAttach): Option[Player] =
     playersByClient.get(client.clientId)
+
+  def removePlayer(client: WhyClientAttach): Unit =
+    val player = playersByClient.remove(client.clientId)
+    for
+      p <- player
+      other <- levelMates(p)
+    do
+      other.client.sendPacket(EntityDelete(p.id))
 }

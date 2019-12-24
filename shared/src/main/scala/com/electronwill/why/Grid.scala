@@ -10,7 +10,7 @@ final class Grid[A : ClassTag](val width: Int,
   require(width > 0 && height > 0)
 
   /** internal storage of A */
-  private val storage = Array.ofDim[A](height * width)
+  private val storage = Array.fill[A](height * width)(default)
 
   /** @return the index of a position in the internal array */
   private inline def idx(pos: Vec2i): Int = width*pos.y + pos.x
@@ -19,8 +19,13 @@ final class Grid[A : ClassTag](val width: Int,
   def apply(pos: Vec2i): A = storage(idx(pos))
   def apply(x: Int, y: Int): A = storage(idx(x, y))
 
-  def update(pos: Vec2i, t: A): Unit = storage(idx(pos)) = t
-  def update(x: Int, y: Int, t: A): Unit = storage(idx(x, y)) = t
+  def update(pos: Vec2i, t: A): Unit = update(pos.x, pos.y, t)
+
+  def update(x: Int, y: Int, t: A): Unit =
+    if t == null && default != null
+      throw NullPointerException(s"Illegal null value for this grid.")
+    else
+      storage(idx(x, y)) = t
 
   def remove(pos: Vec2i): Unit = update(pos, default)
   def remove(x: Int, y: Int): Unit = update(x, y, default)

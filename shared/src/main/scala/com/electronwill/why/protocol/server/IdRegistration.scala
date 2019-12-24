@@ -23,7 +23,7 @@ case class IdRegistration(tiles: Array[TileTypeData], entities: Array[EntityType
 object IdRegistration extends PacketParser[IdRegistration](1) {
   def readData(in: NiolInput) =
     val tiles = new Array[TileTypeData](in.readVarInt())
-    for i <- 1 to tiles.length do
+    for i <- 0 until tiles.length do
       tiles(i) = TileTypeData(
         in.readVarInt(),
         in.readVarString(),
@@ -31,7 +31,7 @@ object IdRegistration extends PacketParser[IdRegistration](1) {
         in.readBool()
       )
     val entities = new Array[EntityTypeData](in.readVarInt())
-    for i <- 1 to entities.length do
+    for i <- 0 until entities.length do
       entities(i) = EntityTypeData(
         in.readVarInt(),
         in.readVarString(),

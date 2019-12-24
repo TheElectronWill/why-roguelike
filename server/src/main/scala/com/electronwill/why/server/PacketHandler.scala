@@ -11,10 +11,9 @@ import why.protocol.server._
 object PacketHandler {
   def handlePacket(p: ClientPacket, client: WhyClientAttach) =
     // TODO register listeners (and use separate files for them) instead of putting all the code in one big match/case
-    Logger.info(s"Received packet from client ${client.clientId}: $p")
     p match
       case ConnectionRequest(clientVersion, username) =>
-        if clientVersion.split(".")(0) != Server.VERSION_MAJOR
+        if clientVersion.split("\\.")(0) != Server.VERSION_MAJOR
           // TODO parse the version correctly (to integers) and use full semantic
           // versioning to compare (e.g. take -beta suffix into account)
           val byebye = ConnectionResponse(false, 0, Server.VERSION, s"Your client version is NOT COMPATIBLE with the server")
@@ -27,16 +26,19 @@ object PacketHandler {
           client.sendPacket(welcomePacket)
 
           // 2: send the types data
+          Logger.info("Sending types data")
           val tilesData = TileType.allTypes.map(t => TileTypeData(t.id, t.make().name, t.defaultChar, t.make().isBlock)).toArray
           val entitiesData = EntityType.allTypes.map(t => EntityTypeData(t.id, "Player", t.defaultChar)).toArray
           val registrationPacket = IdRegistration(tilesData, entitiesData)
           client.sendPacket(registrationPacket)
 
           // 3: send the terrain data
+          Logger.info("Sending terrain data")
           val gameLevel = Server.getOrCreateLevel(1) // generates the level if needed
           sendTerrainData(gameLevel, client)
 
           // 4: register the player
+          Logger.info("Registering the player")
           Server.registerPlayer(player, client)
           val level = Server.getOrCreateLevel(1)
           level.addEntity(player, level.spawnPosition)
@@ -44,8 +46,11 @@ object PacketHandler {
           player.level = level
 
           // 5: notify the other players (in the same level)
+          Logger.info("Notifying the other players (if any)")
           val spawnPacket = EntitySpawn(player.id, Entities.Player.id, player.position)
           Server.levelMates(player).foreach(_.client.sendPacket(spawnPacket))
+
+          Logger.ok("Player spawned!")
 
       case PlayerMove(destination: Vec2i) =>
         Server.getPlayer(client) match
@@ -86,12 +91,13 @@ object PacketHandler {
     val exit = level.exitPosition
 
     val tilesIds = new Array[Int](width * height)
-    for
-      x <- 0 to width
-      y <- 0 to height
-    do
-      tilesIds(width*x + y) = level.terrain(x, y).tpe.id
+    Logger.info(s"Terrain dimensions: $width x $height = ${tilesIds.length} tiles ")
+    for i <- 0 until tilesIds.length do
+      val x = i % width
+      val y = i / width
+      val tpe = level.terrain(x, y).tpe
+      tilesIds(i) = tpe.id
 
-    val terrainData = TerrainData(level.number, width, height, tilesIds, spawn, exit)
-    client.sendPacket(terrainData)
+    val terrainData = TerrainData(level.number, level.name, width, height, tilesIds, spawn, exit)
+    client.sendPacket(terrainData, ()=>Logger.ok("Terrain data sent!"))
 }

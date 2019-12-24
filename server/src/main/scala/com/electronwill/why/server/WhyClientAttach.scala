@@ -24,14 +24,20 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
     */
   override protected def makeHeader(data: NiolBuffer): NiolBuffer =
     val buff = CircularBuffer(BytesStorage.allocateHeap(2))
-    buff.writeShort(data.readableBytes) // packetLength
+    buff.writeShort(data.readableBytes & 0xffff) // packetLength
+    Logger.info(s"Writing packet header: length = ${data.readableBytes}")
     buff
 
   /** Extracts the packet length from the header.
     * @return the packet length, or -1 if not enough data is available to tell
     */
   override protected def readHeader(buffer: NiolBuffer): Int =
-    if buffer.readableBytes < 2 then -1 else buffer.readUnsignedShort()
+    if buffer.readableBytes < 2 then
+      -1
+    else
+      val len = buffer.readUnsignedShort()
+      Logger.info(s"Received packet of length $len")
+      len
 
   /** Reacts to a packet sent by the client. The buffer is guaranteed (by Niol)
     * to contain only the "data" part of only one packet.
@@ -41,14 +47,16 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
     packet match
       case Failure(e) =>
         Logger.error(s"Error while handling incoming data from client $clientId", e)
-        e.printStackTrace()
+        disconnect()
 
       case Success(p) =>
         Logger.info(s"Received packet from client $clientId: $p")
+        PacketHandler.handlePacket(p, this)
 
   def sendPacket(packet: ServerPacket, completionHandler: () => Unit = ()=>()) =
-    val output = ExpandingOutput(32, WhyClientAttach.outputBufferPool)
+    val output = ExpandingOutput(1024, WhyClientAttach.outputBufferPool)
     ServerPacket.write(packet, output)
+    Logger.info(s"Sending packet $packet")
     this.write(output.asBuffer, completionHandler)
 
   def disconnect() =
@@ -57,5 +65,5 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
 }
 object WhyClientAttach {
   private val lastId = AtomicInteger(0)
-  private val outputBufferPool = StagedPools().directStage(100, 10, true).directStage(10000, 5, true).build()
+  private val outputBufferPool = StagedPools().directStage(100, 10, true).defaultAllocateHeap().build()
 }

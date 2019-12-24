@@ -14,9 +14,15 @@ case class BlockTile(name: String, character: Char) extends Tile {
 
 /** Standard tile types. */
 object Tiles {
-  val Void    = register(BasicTile("void", 'ø'))
-  val Unknown = register(BasicTile("?", '?'))
-  val Floor   = register(BasicTile("floor", ' '))
-  val Wall    = register(BlockTile("wall", '='))
-  val Stairs  = register(BasicTile("stairs", 'x'))
+  object VoidTile extends BasicTile("void", ' ')
+  object UnknownTile extends BasicTile("unknown", '?')
+  object FloorTile extends BasicTile("floor", ' ')
+  object WallTile extends BlockTile("wall", '=')
+  object StairsTile extends BasicTile("stairs", 'x')
+
+  val Void = register(VoidTile)
+  val Unknown = register(UnknownTile)
+  val Floor = register(FloorTile)
+  val Wall = register(WallTile)
+  val Stairs = register(StairsTile)
 }

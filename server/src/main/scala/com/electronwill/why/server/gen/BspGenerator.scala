@@ -51,8 +51,8 @@ class BspGenerator(private val minWidth: Int,
 
     // 5: build the walls
     for
-      x <- 0 to width
-      y <- 0 to height
+      x <- 0 until width
+      y <- 0 until height
     do
       if tiles.around(x, y).tHas(_.tpe != Tiles.Void)
         tiles(x, y) = Tiles.Wall.make()

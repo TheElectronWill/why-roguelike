@@ -23,8 +23,7 @@ abstract class PacketRegistry[P <: Packet] {
       Try(parser.readData(in))
 
   def write(p: P, out: NiolOutput): Unit =
-    out.writeByte(p.id)
+    out.writeByte(p.id & 0xff)
     p.writeData(out)
 
-  def init(): Unit
 }

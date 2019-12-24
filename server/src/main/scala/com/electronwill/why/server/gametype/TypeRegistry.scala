@@ -30,7 +30,7 @@ abstract class TypeRegistry[I, T <: [+X <: I] =>> RegisteredType[X], Info] {
 
   private val classMap = HashMap[Class[?], T[I]]() // runtime class -> type
   private val idMap = LongMap[T[I]]() // id -> type
-  private var lastId = -1 // counter
+  private var lastId = 0 // counter
 
   /** Makes an instance of T */
   protected def makeType[Instance <: I](info: Info, provider: () => Instance, id: Int): T[Instance]
@@ -45,7 +45,7 @@ abstract class TypeRegistry[I, T <: [+X <: I] =>> RegisteredType[X], Info] {
     lastId += 1
     // Registers the type with this id:
     val tpe = makeType(info, provider, id)
-    idMap(id.toLong) = tpe
+    idMap(id) = tpe
     tpe
 
   protected final def getOrRegister[Instance <: I](info: Info, runtimeClass: Class[?], instanceMaker: () => Instance) =
