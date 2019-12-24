@@ -4,3 +4,7 @@ target/
 .metals/
 .dotty-ide-artifact
 .dotty-ide.json
+
+# Run artifacts
+server-config.toml
+why-client.log
