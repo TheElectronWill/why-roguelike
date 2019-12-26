@@ -13,6 +13,7 @@ object Client {
   var player: ClientEntity = _
 
   private var networkSystem: NetworkSystem = _
+  private var inputHandler: InputHandler = _
 
   def network = networkSystem // public getter
 
@@ -20,11 +21,15 @@ object Client {
     networkSystem = NetworkSystem(serverAddress, serverPort)
     networkSystem.start()
 
+  def makeInteractive() =
+    inputHandler = InputHandler()
+    Thread(inputHandler).start()
+
   def initView() =
-    levelView = Box.center(player.position, TUI.width, TUI.height)
+    levelView = Box.positive(level.width, level.height)//Box.center(player.position, TUI.width, TUI.height)
     redrawView()
 
-  def moveView(d: Direction) =
+  def moveView(d: Direction): Unit =
     levelView = d match
       case Direction.RIGHT =>
         levelView.shift(TUI.width-2*VIEW_PADDING, 0)
@@ -56,7 +61,11 @@ object Client {
         TUI.write(newPosition.x, newPosition.y, player.tpe.character, player.customColor)
       true
 
-  def redrawView() =
+  def redrawView(): Unit =
+    TUI.clear()
+    Logger.info(s"Terminal size: ${TUI.width} x ${TUI.height}")
+    Logger.info(s"Level size: (0, 0) to (${level.width}, ${level.height})")
+    Logger.info(s"Player view: ${levelView.cornerMin} to ${levelView.cornerMax}")
     for
       y <- levelView.yMin to levelView.yMax
       x <- levelView.xMin to levelView.xMax
@@ -65,8 +74,8 @@ object Client {
       val tile = level.terrain(x, y)
       val entity = level.getEntity(x, y)
       if entity.nonEmpty
-        TUI.write(x, y, entity.get.tpe.character, entity.get.customColor)
+        TUI.write(x, y, Symbol.of(entity.get), entity.get.customColor)
       else
-        TUI.write(x, y, tile.character)
+        TUI.write(x, y, Symbol.of(tile, level.terrain.around(x, y)))
 
 }

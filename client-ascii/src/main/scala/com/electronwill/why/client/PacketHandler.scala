@@ -46,6 +46,9 @@ object PacketHandler {
         Client.initView()
         Logger.ok("Player's view initialized!")
 
+        Client.makeInteractive()
+        Logger.ok("Interactive mode enabled.")
+
     case IdRegistration(tiles, entities) =>
       Logger.info(s"Registering ${tiles.length} types of tiles and ${entities.length} types of entities.")
 
