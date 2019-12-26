@@ -52,9 +52,18 @@ object TUI {
     write(x, y, ch.toString, color)
 
   /** Writes a colored message of **one** line at the given position. */
-  def write(x: Int, y: Int, str: String, color: ColorSetting) =
+  def write(x: Int, y: Int, str: String, color: ColorSetting): Unit =
     moveCursor(x, y)
+    write(str, color)
 
+  def write(ch: Char): Unit = write(ch.toString)
+
+  def write(ch: Char, color: ColorSetting): Unit = write(ch.toString, color)
+
+  def write(str: String): Unit = write(str, ColorSetting(None, None))
+
+  /** Writes a colored message of **one** line at the current position. */
+  def write(str: String, color: ColorSetting) =
     for fg <- color.fg do
       print(AnsiSequences.colorFg(fg))
     for bg <- color.bg do
