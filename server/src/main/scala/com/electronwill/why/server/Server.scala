@@ -35,8 +35,8 @@ object Server {
     Logger.info("Registering types...")
     Logger.info(s"Tiles.Void is ${Tiles.Void}")
     Logger.info("(Skipped other tiles)")
-    Logger.info(s"Entities.Player is '${Entities.Player.defaultChar}'")
-    Logger.ok(s"Types registered: ${TileType.allTypes.size} tiles and ${EntityType.allTypes.size} entities")
+    Logger.info(s"Entities.Player is '${Entities.Player.character}'")
+    Logger.ok(s"Types registered: ${Tiles.size} tiles and ${Entities.size} entities")
 
   def getOrCreateLevel(n: Int): ServerDungeonLevel =
     levels.getOrElseUpdate(n.toLong, generator.generate(n))

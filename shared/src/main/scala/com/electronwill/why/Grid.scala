@@ -37,13 +37,15 @@ final class Grid[A : ClassTag](val width: Int,
     storage(origin) = default
   }
 
-  def isValid(pos: Vec2i): Boolean =
-    pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height
+  def isValid(pos: Vec2i): Boolean = isValid(pos.x, pos.y)
+  def isValid(x: Int, y: Int): Boolean =
+    x >= 0 && x < width && y >= 0 && y < height
+
 
   /** Gets the content of the tiles around the position, in the following order:
     * (up, right, down, left)
     */
-  def around(pos: Vec2i): (A,A,A,A) = (Up, Right, Down, Left).tmap(v =>
+  def around(pos: Vec2i): (A,A,A,A) = (UP, RIGHT, DOWN, LEFT).tmap(v =>
     if isValid(pos+v) then apply(pos+v) else default
   )
   def around(x: Int, y: Int): (A,A,A,A) = around(Vec2i(x, y))

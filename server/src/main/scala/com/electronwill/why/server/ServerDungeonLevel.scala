@@ -7,8 +7,8 @@ import gametype.ServerEntity
 import collection.RecyclingIndex
 import scala.collection.mutable.LongMap
 
-class ServerDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, terrain: Grid[Tile])
-  extends DungeonLevel[Tile, ServerEntity](number: Int, name, spawn, exit, terrain) {
+class ServerDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, terrain: Grid[RegisteredType])
+  extends DungeonLevel[ServerEntity](number: Int, name, spawn, exit, terrain) {
 
   def addEntity(e: ServerEntity, at: Vec2i): Unit =
     entityGrid(at) = e

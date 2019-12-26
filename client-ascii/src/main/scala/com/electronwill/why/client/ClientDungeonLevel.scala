@@ -4,10 +4,10 @@ package why.client
 import collection.RecyclingIndex
 import gametype._
 import why.{DungeonLevel, Grid, Vec2i}
-import why.gametype.EntityId
+import why.gametype.{EntityId, RegisteredType}
 
-class ClientDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, terrain: Grid[ClientTile])
-  extends DungeonLevel[ClientTile, ClientEntity](number, name, spawn, exit, terrain) {
+class ClientDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, terrain: Grid[RegisteredType])
+  extends DungeonLevel[ClientEntity](number, name, spawn, exit, terrain) {
 
   def addEntity(e: ClientEntity, at: Vec2i): Unit =
     entityIds(e.id.id) = e

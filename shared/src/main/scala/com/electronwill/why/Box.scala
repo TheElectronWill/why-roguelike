@@ -33,6 +33,8 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
       else yMax
     Vec2i(x, y)
 
+  def shift(x: Int, y: Int) = Box(xmin+x, ymin+y, xmax+x, ymax+x)
+
   /** Creates two sub-boxes by splitting this box in two.
     * By default the box is cut along its longer axis.
     * @param horitontally to cut horizontally

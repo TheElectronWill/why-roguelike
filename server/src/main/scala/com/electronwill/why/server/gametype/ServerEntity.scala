@@ -5,7 +5,7 @@ package gametype
 import why.gametype._
 import why._
 
-class ServerEntity(name: String, char: Char) extends Entity(name, char) {
+abstract class ServerEntity(name: String) extends Entity(name) {
   private var _level: ServerDungeonLevel = _
   override def level: ServerDungeonLevel = _level
   def level_=(l: ServerDungeonLevel) = _level = l

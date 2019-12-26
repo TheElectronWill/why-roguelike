@@ -27,24 +27,24 @@ class BspGenerator(private val minWidth: Int,
   def generate(level: Int): ServerDungeonLevel =
     // 1: prepare the space
     val (width, height) = terrainSize(level)
-    val tiles = Grid[Tile](width, height, Tiles.Void.make())
+    val tiles = Grid[RegisteredType](width, height, Tiles.Void)
 
     // 2: divide the space
     val tree = BspTree(Box.positive(width, height))
     split(tree.root, 0, splitCount(level))
 
     // 3: create the rooms (and the spawn and exit in 2 different rooms)
-    var spawn = Vec2i.Zero
+    var spawn = Vec2i.ZERO
     var lastRoom: Box = null
     for node <- tree do
       if node.isLeaf
         val room = makeRoom(node, tiles)
-        if spawn == Vec2i.Zero
+        if spawn == Vec2i.ZERO
           spawn = room.randomPoint
         lastRoom = room
 
     val exit = lastRoom.randomPoint
-    tiles(exit) = Tiles.Stairs.make()
+    tiles(exit) = Tiles.Stairs
 
     // 4: connect the rooms
     connectChilds(tree.root, tiles)
@@ -54,30 +54,30 @@ class BspGenerator(private val minWidth: Int,
       x <- 0 until width
       y <- 0 until height
     do
-      if tiles.around(x, y).tHas(_.tpe != Tiles.Void)
-        tiles(x, y) = Tiles.Wall.make()
+      if tiles.around(x, y).tHas(_ != Tiles.Void)
+        tiles(x, y) = Tiles.Wall
 
     // Done!
     ServerDungeonLevel(level, s"level $level", spawn, exit, tiles)
 
-  private def connectChilds(n: BspNode, tiles: Grid[Tile]): Unit =
+  private def connectChilds(n: BspNode, tiles: Grid[RegisteredType]): Unit =
     if n.isLeaf then return
     val a = n.childA.box.randomPoint
     val b = n.childB.box.randomPoint
     makeCorridor(a, b, tiles)
 
-  private def makeCorridor(a: Vec2i, b: Vec2i, tiles: Grid[Tile]) =
+  private def makeCorridor(a: Vec2i, b: Vec2i, tiles: Grid[RegisteredType]) =
     val diff = b-a
     // horizontal (x) part
     for x <- a.x to b.x by diff.x.sign do
-      tiles(x, a.y) = Tiles.Floor.make()
+      tiles(x, a.y) = Tiles.Floor
 
     // vertical (y) part
     for y <- a.y to b.y by diff.y.sign do
-      tiles(b.x, y) = Tiles.Floor.make()
+      tiles(b.x, y) = Tiles.Floor
 
   /** Creates a room of random size inside of the given box. */
-  private def makeRoom(node: BspNode, tiles: Grid[Tile]) =
+  private def makeRoom(node: BspNode, tiles: Grid[RegisteredType]) =
     val w = Random.between(2, node.box.width)
     val h = Random.between(2, node.box.height)
     val room = Box.center(node.box.roundedCenter, w, h)
@@ -85,7 +85,7 @@ class BspGenerator(private val minWidth: Int,
       x <- room.xMin to room.xMax
       y <- room.yMin to room.yMax
     do
-      tiles(x, y) = Tiles.Floor.make()
+      tiles(x, y) = Tiles.Floor
 
     node.box = room
     room

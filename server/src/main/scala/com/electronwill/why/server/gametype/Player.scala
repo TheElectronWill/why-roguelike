@@ -5,4 +5,6 @@ import gametype.Entity
 import gametype.EntityId
 import server.WhyClientAttach
 
-class Player(val client: WhyClientAttach) extends ServerEntity(s"player ${client.clientId}", '@')
+class Player(val client: WhyClientAttach) extends ServerEntity(s"player ${client.clientId}") {
+  def tpe = Entities.Player
+}

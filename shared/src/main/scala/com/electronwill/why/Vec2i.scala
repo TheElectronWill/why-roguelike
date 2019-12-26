@@ -34,9 +34,9 @@ object Vec2i {
     new Vec2i(x, y)
   }
 
-  val Zero = Vec2i(0,0)
-  val Right = Vec2i(1,0)
-  val Left = Vec2i(-1,0)
-  val Up = Vec2i(0,-1)
-  val Down = Vec2i(0,1)
+  val ZERO = Vec2i(0,0)
+  val RIGHT = Vec2i(1,0)
+  val LEFT = Vec2i(-1,0)
+  val UP = Vec2i(0,-1)
+  val DOWN = Vec2i(0,1)
 }

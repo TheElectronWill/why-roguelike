@@ -11,7 +11,6 @@ object ServerPacket extends PacketRegistry[ServerPacket] {
   register(EntitySpawn)
   register(IdRegistration)
   register(TerrainData)
-  register(TileAppearance)
   register(TileUpdate)
 
   register(Warning)

@@ -7,6 +7,7 @@ import niol._
 import niol.buffer.CircularBuffer
 import niol.buffer.storage.BytesStorage
 import scala.util.{Try, Failure, Success}
+import scala.util.control.NonFatal
 
 class PacketReader(private val in: NiolInput) extends Runnable {
   @volatile var running = true
@@ -28,9 +29,12 @@ class PacketReader(private val in: NiolInput) extends Runnable {
         val packet: Try[ServerPacket] = ServerPacket.parse(packetBuffer)
         packet match
           case Failure(e) =>
-            Logger.error(s"Error while handling incoming data from the server.", e)
+            Logger.error(s"Failed to parse incoming packet", e)
 
           case Success(p) =>
             Logger.info(s"Received a packet from the server: $p")
-            PacketHandler.handle(p)
+            try
+              PacketHandler.handle(p)
+            catch case NonFatal(ex) =>
+              Logger.error(s"Error while handling the packet", ex)
 }

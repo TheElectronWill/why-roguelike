@@ -5,37 +5,23 @@ package server
 import niol._
 import why.gametype._
 
-case class IdRegistration(tiles: Array[TileTypeData], entities: Array[EntityTypeData]) extends ServerPacket(1) {
+case class IdRegistration(tiles: Array[RegisteredType], entities: Array[RegisteredType]) extends ServerPacket(1) {
   def writeData(out: NiolOutput): Unit =
     out.writeVarInt(tiles.length)
-    for t <- tiles do
-      out.writeVarInt(t.id)
-      out.writeVarString(t.name)
-      out.writeChar(t.defaultChar)
-      out.writeBool(t.isBlock)
+    tiles.foreach(out.writeType(_))
 
     out.writeVarInt(entities.length)
-    for e <- tiles do
-      out.writeVarInt(e.id)
-      out.writeVarString(e.name)
-      out.writeChar(e.defaultChar)
+    entities.foreach(out.writeType(_))
 }
 object IdRegistration extends PacketParser[IdRegistration](1) {
   def readData(in: NiolInput) =
-    val tiles = new Array[TileTypeData](in.readVarInt())
+    val tiles = new Array[RegisteredType](in.readVarInt())
     for i <- 0 until tiles.length do
-      tiles(i) = TileTypeData(
-        in.readVarInt(),
-        in.readVarString(),
-        in.readChar(),
-        in.readBool()
-      )
-    val entities = new Array[EntityTypeData](in.readVarInt())
+      tiles(i) = in.readType()
+
+    val entities = new Array[RegisteredType](in.readVarInt())
     for i <- 0 until entities.length do
-      entities(i) = EntityTypeData(
-        in.readVarInt(),
-        in.readVarString(),
-        in.readChar()
-      )
+      entities(i) = in.readType()
+
     IdRegistration(tiles, entities)
 }

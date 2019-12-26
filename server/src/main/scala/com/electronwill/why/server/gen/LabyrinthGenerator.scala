@@ -19,22 +19,22 @@ class LabyrinthGenerator(private val width: Int,
       while start == p do
         p = bounds.randomBorderPoint
       p
-    val tiles = Grid[Tile](width, height, Tiles.Void.make())
+    val tiles = Grid[RegisteredType](width, height, Tiles.Void)
     labyrinth(bounds, tiles)
-    tiles(end) = Tiles.Stairs.make()
+    tiles(end) = Tiles.Stairs
     ServerDungeonLevel(level, s"level $level", start, end, tiles)
 
-  private def labyrinth(box: Box, tiles: Grid[Tile]): Unit =
+  private def labyrinth(box: Box, tiles: Grid[RegisteredType]): Unit =
     val center = box.roundedCenter
     if box.width == 3
       val yDoor = Random.between(box.yMin, box.yMax)
       for y <- box.yMin to box.yMax if y != yDoor do
-        tiles(center.x, y) = Tiles.Wall.make()
+        tiles(center.x, y) = Tiles.Wall
 
     else if box.height == 3
       val xDoor = Random.between(box.xMin, box.xMax)
       for x <- box.xMin to box.xMax if x != xDoor do
-        tiles(x, center.y) = Tiles.Wall.make()
+        tiles(x, center.y) = Tiles.Wall
 
     else if box.width > 3 || box.height > 3 // ignore box if too small
       val (subA, subB) = box.split()

@@ -6,12 +6,12 @@ import collection.RecyclingIndex
 import scala.collection.mutable.LongMap
 import scala.reflect.ClassTag
 
-abstract class DungeonLevel[T <: Tile, E >: Null <: Entity : ClassTag](
+abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
     val number: Int,
     val name: String,
     val spawnPosition: Vec2i,
     val exitPosition: Vec2i,
-    val terrain: Grid[T],
+    val terrain: Grid[RegisteredType],
   ) {
 
   protected val entityGrid = Grid[E](width, height, null)
@@ -22,6 +22,7 @@ abstract class DungeonLevel[T <: Tile, E >: Null <: Entity : ClassTag](
 
   def getEntity(id: EntityId): Option[E] = entityIds.get(id.id)
   def getEntity(at: Vec2i): Option[E] = Option(entityGrid(at))
+  def getEntity(x: Int, y: Int): Option[E] = Option(entityGrid(x, y))
 
   def moveEntity(e: E, to: Vec2i): Unit =
     entityGrid.move(e.position, to)
