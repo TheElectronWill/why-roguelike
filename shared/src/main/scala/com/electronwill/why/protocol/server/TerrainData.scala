@@ -5,15 +5,16 @@ package server
 import niol._
 import why.Vec2i
 
-case class TerrainData(levelId: Int, levelName: String, width: Int, height: Int, tilesIds: Array[Int], spawn: Vec2i, exit: Vec2i) extends ServerPacket(2) {
+case class TerrainData(levelId: Int, levelName: String, width: Int, height: Int, spawn: Vec2i, exit: Vec2i, tilesIds: Array[Int]) extends ServerPacket(2) {
   def writeData(out: NiolOutput): Unit =
     out.writeShort(levelId)
     out.writeVarString(levelName)
     out.writeShort(width)
     out.writeShort(height)
-    out.writeInts(tilesIds)
     out.writeVector(spawn)
     out.writeVector(exit)
+    for t <- tilesIds do
+      out.writeVarInt(t)
 }
 object TerrainData extends PacketParser[TerrainData](2) {
   def readData(in: NiolInput) =
@@ -21,10 +22,10 @@ object TerrainData extends PacketParser[TerrainData](2) {
     val levelName = in.readVarString()
     val width = in.readShort()
     val height = in.readShort()
+    val spawn = in.readVector()
+    val exit = in.readVector()
     val tiles = new Array[Int](width*height)
     for i <- 0 until tiles.length do
       tiles(i) = in.readVarInt()
-    val spawn = in.readVector()
-    val exit = in.readVector()
-    TerrainData(levelId, levelName, width, height, tiles, spawn, exit)
+    TerrainData(levelId, levelName, width, height, spawn, exit, tiles)
 }

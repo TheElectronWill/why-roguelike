@@ -7,6 +7,7 @@ import why.protocol.Warning
 import why.protocol.server._
 import why.{Logger, Grid}
 
+/** Reacts to received packets. */
 object PacketHandler {
   def handle(p: ServerPacket): Unit = p match
     case ConnectionResponse(accepted, serverVersion, msg) =>
@@ -37,6 +38,14 @@ object PacketHandler {
       val entity = ClientEntity(entityId, tpe)
       Client.level.addEntity(entity, position)
 
+      if tpe.name == "player" && position == Client.level.spawnPosition
+        Client.player = entity
+        Logger.ok("Player instance created!")
+
+        Logger.info("Initializing player's view...")
+        Client.initView()
+        Logger.ok("Player's view initialized!")
+
     case IdRegistration(tiles, entities) =>
       Logger.info(s"Registering ${tiles.length} types of tiles and ${entities.length} types of entities.")
 
@@ -49,10 +58,8 @@ object PacketHandler {
         Logger.info(s"-> $t")
 
       Logger.ok("Types registered!")
-      Client.player = ClientEntity(EntityId(0), Entities.get("player")) // TODO playerId
-      Logger.ok("Player instance created!")
 
-    case TerrainData(levelId, levelName, width, height, tilesIds, spawn, exit) =>
+    case TerrainData(levelId, levelName, width, height, spawn, exit, tilesIds) =>
       val terrain = Grid[RegisteredType](width, height, Tiles.get("void"))
       for (id, i) <- tilesIds.zipWithIndex do
         val x = i % width
@@ -60,13 +67,6 @@ object PacketHandler {
         terrain(x, y) = Tiles.get(id)
       Client.level = ClientDungeonLevel(levelId, levelName, spawn, exit, terrain)
       Logger.ok(s"Dungeon level set to $levelName")
-
-      Client.level.addEntity(Client.player, spawn)
-      Logger.ok(s"Player spawned at $spawn")
-
-      Logger.info("Initializing player's view...")
-      Client.initView()
-      Logger.ok("Player's view initialized!")
 
     case TileUpdate(position, tileId) =>
       Client.level.terrain(position) = Tiles.get(tileId)

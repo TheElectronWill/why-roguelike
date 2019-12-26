@@ -21,7 +21,6 @@ object PacketHandler {
         else
           // 1: accept the connection
           Logger.info(s"New client connected with id ${client.clientId}")
-          val player = Player(client) // TODO send the player id after the terrain data
           val welcomePacket = ConnectionResponse(true, Server.VERSION, "Welcome to WHY - by TheElectronWill")
           client.sendPacket(welcomePacket)
 
@@ -39,14 +38,13 @@ object PacketHandler {
 
           // 4: register the player
           Logger.info("Registering the player")
+          val player = Player(client)
           Server.registerPlayer(player, client)
-          val level = Server.getOrCreateLevel(1)
-          level.addEntity(player, level.spawnPosition)
 
-          // 5: notify the other players (in the same level)
-          Logger.info("Notifying the other players (if any)")
-          val spawnPacket = EntitySpawn(player.id, Entities.Player.id, player.position)
-          Server.levelMates(player).foreach(_.client.sendPacket(spawnPacket))
+          // 5: spawn the player and notify everyone in this level
+          Logger.info("Spawning the player")
+          val level = Server.getOrCreateLevel(1)
+          level.addEntity(player, level.spawnPosition) // this sends EntitySpawn
 
           Logger.ok("Player spawned!")
 
@@ -96,6 +94,6 @@ object PacketHandler {
       val tileType = level.terrain(x, y)
       tilesIds(i) = tileType.id
 
-    val terrainData = TerrainData(level.number, level.name, width, height, tilesIds, spawn, exit)
+    val terrainData = TerrainData(level.number, level.name, width, height, spawn, exit, tilesIds)
     client.sendPacket(terrainData, ()=>Logger.ok("Terrain data sent!"))
 }

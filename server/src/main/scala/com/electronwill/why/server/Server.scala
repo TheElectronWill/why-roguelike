@@ -24,7 +24,7 @@ object Server {
   config.load()
 
   private val levels = LongMap[ServerDungeonLevel]() // int -> loaded level
-  private val generator = gen.BspGenerator(50, 40, 1000, 1000, 2) // generates levels
+  private val generator = gen.BspGenerator(80, 20, 1000, 1000, 2) // generates levels
   private val playersByClient = LongMap[Player]() // client id -> player entity
 
   val port: Int = config.get("port")
@@ -39,7 +39,12 @@ object Server {
     Logger.ok(s"Types registered: ${Tiles.size} tiles and ${Entities.size} entities")
 
   def getOrCreateLevel(n: Int): ServerDungeonLevel =
-    levels.getOrElseUpdate(n.toLong, generator.generate(n))
+    levels.getOrElseUpdate(n.toLong, generateLevel(n))
+
+  private def generateLevel(n: Int) =
+    val lvl = generator.generate(n)
+    Logger.ok(s"Level $n generated")
+    lvl
 
   /** Gets all the players in the same level as this player */
   def levelMates(player: Player) =

@@ -27,12 +27,12 @@ class LabyrinthGenerator(private val width: Int,
   private def labyrinth(box: Box, tiles: Grid[RegisteredType]): Unit =
     val center = box.roundedCenter
     if box.width == 3
-      val yDoor = Random.between(box.yMin, box.yMax)
+      val yDoor = Random.between(box.yMin, box.yMax+1)
       for y <- box.yMin to box.yMax if y != yDoor do
         tiles(center.x, y) = Tiles.Wall
 
     else if box.height == 3
-      val xDoor = Random.between(box.xMin, box.xMax)
+      val xDoor = Random.between(box.xMin, box.xMax+1)
       for x <- box.xMin to box.xMax if x != xDoor do
         tiles(x, center.y) = Tiles.Wall
 

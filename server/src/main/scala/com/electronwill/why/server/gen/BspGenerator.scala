@@ -26,11 +26,12 @@ class BspGenerator(private val minWidth: Int,
 
   def generate(level: Int): ServerDungeonLevel =
     // 1: prepare the space
+    //val (width, height) = terrainSize(level)
     val (width, height) = terrainSize(level)
     val tiles = Grid[RegisteredType](width, height, Tiles.Void)
 
     // 2: divide the space
-    val tree = BspTree(Box.positive(width, height))
+    val tree = BspTree(Box.corners(Vec2i(1,1), Vec2i(width-1, height-1))) // prevent the floor from touching the terrain's borders
     split(tree.root, 0, splitCount(level))
 
     // 3: create the rooms (and the spawn and exit in 2 different rooms)
@@ -50,12 +51,17 @@ class BspGenerator(private val minWidth: Int,
     connectChilds(tree.root, tiles)
 
     // 5: build the walls
+    // We do this after creating the rooms to allow merges
+    val wallsPositions = SimpleBag[Vec2i]()
     for
       x <- 0 until width
       y <- 0 until height
     do
-      if tiles.around(x, y).tHas(_ != Tiles.Void)
-        tiles(x, y) = Tiles.Wall
+      val pos = Vec2i(x, y)
+      if tiles(pos) == Tiles.Void && tiles.squareAround(pos, 1).exists(_ != Tiles.Void)
+        wallsPositions += pos
+
+    wallsPositions.foreach(tiles(_) = Tiles.Wall)
 
     // Done!
     ServerDungeonLevel(level, s"level $level", spawn, exit, tiles)
@@ -65,21 +71,25 @@ class BspGenerator(private val minWidth: Int,
     val a = n.childA.box.randomPoint
     val b = n.childB.box.randomPoint
     makeCorridor(a, b, tiles)
+    connectChilds(n.childA, tiles)
+    connectChilds(n.childB, tiles)
 
   private def makeCorridor(a: Vec2i, b: Vec2i, tiles: Grid[RegisteredType]) =
     val diff = b-a
     // horizontal (x) part
-    for x <- a.x to b.x by diff.x.sign do
-      tiles(x, a.y) = Tiles.Floor
+    if diff.x != 0
+      for x <- a.x to b.x by diff.x.sign do
+        tiles(x, a.y) = Tiles.Floor
 
     // vertical (y) part
-    for y <- a.y to b.y by diff.y.sign do
-      tiles(b.x, y) = Tiles.Floor
+    if diff.y != 0
+      for y <- a.y to b.y by diff.y.sign do
+        tiles(b.x, y) = Tiles.Floor
 
   /** Creates a room of random size inside of the given box. */
   private def makeRoom(node: BspNode, tiles: Grid[RegisteredType]) =
-    val w = Random.between(2, node.box.width)
-    val h = Random.between(2, node.box.height)
+    val w = Random.between(2, node.box.width+1)
+    val h = Random.between(2, node.box.height+1)
     val room = Box.center(node.box.roundedCenter, w, h)
     for
       x <- room.xMin to room.xMax

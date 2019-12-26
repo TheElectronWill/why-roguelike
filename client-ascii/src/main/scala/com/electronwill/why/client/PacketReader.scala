@@ -9,6 +9,7 @@ import niol.buffer.storage.BytesStorage
 import scala.util.{Try, Failure, Success}
 import scala.util.control.NonFatal
 
+/** Parses incoming packets. */
 class PacketReader(private val in: NiolInput) extends Runnable {
   @volatile var running = true
 

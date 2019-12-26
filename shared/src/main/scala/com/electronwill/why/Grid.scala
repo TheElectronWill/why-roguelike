@@ -50,10 +50,11 @@ final class Grid[A : ClassTag](val width: Int,
   )
   def around(x: Int, y: Int): (A,A,A,A) = around(Vec2i(x, y))
 
-  def squareAround(center: Vec2i, radius: Int): Iterable[A] =
+  def squareAround(center: Vec2i, radius: Int): Seq[A] =
     for
       x <- center.x-radius to center.x+radius
       y <- center.y-radius to center.y+radius
+      if isValid(x, y)
     yield
       this(Vec2i(x, y))
 }

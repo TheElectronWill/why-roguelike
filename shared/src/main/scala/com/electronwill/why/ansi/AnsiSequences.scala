@@ -35,7 +35,7 @@ object AnsiSequences {
   def moveLineDown(n: Int) = csi('F', n)
 
   def moveToColumn(col: Int) = csi('G', col)
-  def moveTo(line: Int, col: Int) = csi("G", line, col)
+  def moveTo(line: Int, col: Int) = csi("H", line, col)
 
   def scrollUp(n: Int) = csi('S', n)
   def scrollDown(n: Int) = csi('T', n)

@@ -24,6 +24,9 @@ object TUI {
   /** Gets the width (in columns) of the terminal. */
   def width: Int = tput("cols").toInt
 
+  def clear(): Unit =
+    print(AnsiSequences.clearScreen)
+
   def cursorX = _x
   def cursorY = _y
   def cursor = Vec2i(_x, _y)
@@ -52,7 +55,7 @@ object TUI {
     write(x, y, ch.toString, color)
 
   /** Writes a colored message of **one** line at the given position. */
-  def write(x: Int, y: Int, str: String, color: ColorSetting): Unit =
+  def write(x: Int, y: Int, str: String, color: ColorSetting = ColorSetting(None, None)): Unit =
     moveCursor(x, y)
     write(str, color)
 

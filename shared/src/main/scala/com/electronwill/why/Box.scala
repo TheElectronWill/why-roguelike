@@ -20,15 +20,16 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
   def height = ymax-ymin
   def width = xmax-xmin
 
-  def isTall = height>width
-  def isWide = height<width
-  def isSquare = height==width
+  def isTall = height > width
+  def isWide = height < width
+  def isSquare = height == width
 
-  def randomPoint = Vec2i(Random.between(xMin, xMax), Random.between(yMin, yMax))
+  def randomPoint = Vec2i(Random.between(xMin, xMax+1), Random.between(yMin, yMax+1))
+
   def randomBorderPoint =
-    val x = Random.between(xMin, xMax)
+    val x = Random.between(xMin, xMax+1)
     val y =
-      if x == xMin || x == xMax then Random.between(yMin, yMax)
+      if x == xMin || x == xMax then Random.between(yMin, yMax+1)
       else if Random.nextBoolean() then yMin
       else yMax
     Vec2i(x, y)

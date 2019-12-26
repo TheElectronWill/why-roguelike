@@ -5,4 +5,4 @@ package com.electronwill.why.gametype
   * @param id the type id
   * @param character what to display for this type
   */
-class RegisteredType(val name: String, val id: Int, val character: Char, val isBlocking: Boolean)
+final case class RegisteredType( name: String,  id: Int,  character: Char,  isBlocking: Boolean)
