@@ -1,13 +1,12 @@
 package com.electronwill
 package why.client
+package console
 
-import gametype._
-import why.gametype._
-import why._
+import gametype.Tiles
+import why.gametype.{Entity, RegisteredType => T}
 
 object Symbol {
   private val Wall = Tiles.get("wall")
-  private type T = RegisteredType
 
   def of(tile: T, surrounding: (T, T, T, T)): Char =
     if tile == Wall

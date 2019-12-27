@@ -1,5 +1,6 @@
 package com.electronwill
 package why.client
+package network
 
 import gametype._
 import why.gametype.{EntityId, RegisteredType}

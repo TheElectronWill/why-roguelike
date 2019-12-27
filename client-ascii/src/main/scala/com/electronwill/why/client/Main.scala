@@ -1,6 +1,7 @@
 package com.electronwill.why
 package client
 
+import console.{ConsoleOutput => Console}
 import java.io.PrintStream
 import java.io.File
 
@@ -10,5 +11,5 @@ import java.io.File
     Logger.error(s"Uncaught exception in thread $t", ex)
   })
   val os = System.getProperty("os.name") + " " + System.getProperty("os.version")
-  Logger.info(s"Starting WHY client in a ${ConsoleOutput.width}x${ConsoleOutput.height} terminal, on $os")
+  Logger.info(s"Starting WHY client in a ${Console.width}x${Console.height} terminal, on $os")
   Client.connect(serverIP, serverPort)

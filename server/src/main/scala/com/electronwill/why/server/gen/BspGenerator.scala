@@ -22,7 +22,7 @@ class BspGenerator(private val minWidth: Int,
                    private val maxWidth: Int,
                    private val maxHeight: Int,
                    private val minSplits: Int)
-  extends LevelGenerator {
+    extends LevelGenerator {
 
   def generate(level: Int): ServerDungeonLevel =
     // 1: prepare the space

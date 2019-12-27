@@ -1,6 +1,6 @@
 package com.electronwill
 package why
-package client
+package client.network
 
 import protocol.server._
 import niol._

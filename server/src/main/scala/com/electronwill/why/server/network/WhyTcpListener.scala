@@ -1,5 +1,6 @@
 package com.electronwill
 package why.server
+package network
 
 import why.Logger
 import niol.network.tcp.{ServerChannelInfos => SCI, _}

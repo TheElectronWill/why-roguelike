@@ -1,5 +1,6 @@
 package com.electronwill.why
 package client
+package console
 
 import scala.io.StdIn
 import sys.process._

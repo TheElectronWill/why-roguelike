@@ -1,8 +1,10 @@
 package com.electronwill.why
 package client
 
-import gametype._
 import ansi._
+import gametype._
+import console.{Symbol, ConsoleOutput, InputHandler}
+import network.NetworkSystem
 import protocol.client.PlayerMove
 
 object Client {

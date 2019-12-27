@@ -1,8 +1,8 @@
 package com.electronwill.why
-package client
+package client.console
 
-import java.io._
 import ansi._
+import java.io._
 
 /** Console output.
   *

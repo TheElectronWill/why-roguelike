@@ -1,5 +1,5 @@
 package com.electronwill.why
-package client
+package client.console
 
 import sys.process._
 import java.nio.charset.StandardCharsets.UTF_8
@@ -36,7 +36,7 @@ object ConsoleInput {
     else
       Input.Text(first.toChar.toString)
 
-  def handleCSI(code: Int): Input =
+  private def handleCSI(code: Int): Input =
     code match
       case 65 => Input.Arrow(Direction.UP)
       case 66 => Input.Arrow(Direction.DOWN)

@@ -1,6 +1,7 @@
 package com.electronwill
 package why
 package server
+package network
 
 import niol.network.tcp.{BufferSettings, ScalableSelector}
 import niol.buffer.storage.StagedPools

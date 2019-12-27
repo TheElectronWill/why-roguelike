@@ -3,6 +3,7 @@ package why
 package server
 
 import gametype._
+import network.{NetworkSystem, WhyClientAttach}
 
 import nightconfig.core.file.FileConfig
 import scala.collection.mutable.LongMap

@@ -20,7 +20,7 @@ class WalkingGenerator(private val width: Int,
                        private val height: Int,
                        private val emptyFactor: Float,
                        minExitDistance: Float)
-  extends LevelGenerator {
+    extends LevelGenerator {
 
   private val squaredMinExitDistance = minExitDistance*minExitDistance
 

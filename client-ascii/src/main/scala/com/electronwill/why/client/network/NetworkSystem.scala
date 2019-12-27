@@ -1,6 +1,7 @@
 package com.electronwill
 package why
 package client
+package network
 
 import protocol.Disconnect
 import protocol.client._

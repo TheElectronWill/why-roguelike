@@ -1,5 +1,6 @@
 package com.electronwill
 package why.server
+package network
 
 import gametype._
 import why._
