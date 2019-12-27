@@ -62,7 +62,6 @@ object Server {
     val player = playersByClient.remove(client.clientId)
     for
       p <- player
-      other <- levelMates(p)
     do
-      other.client.sendPacket(EntityDelete(p.id))
+      p.level.deleteEntity(p)
 }

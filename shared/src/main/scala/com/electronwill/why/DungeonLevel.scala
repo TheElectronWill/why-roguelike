@@ -15,7 +15,7 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
   ) {
 
   protected val entityGrid = Grid[E](width, height, null)
-  protected val entityIds = RecyclingIndex[E]()
+  protected val entityIds = RecyclingIndex[E](128)
 
   def width: Int = terrain.width
   def height: Int = terrain.height

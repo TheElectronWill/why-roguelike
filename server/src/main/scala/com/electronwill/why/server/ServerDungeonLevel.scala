@@ -34,5 +34,9 @@ class ServerDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, t
     e.deinit()
 
     val despawnPacket = EntityDelete(id)
-    players.foreach(_.client.sendPacket(despawnPacket))
+    for
+      p <- players
+      if p != e // Don't notify the player when it disconnects
+    do
+      p.client.sendPacket(despawnPacket)
 }
