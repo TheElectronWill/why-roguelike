@@ -114,4 +114,9 @@ object PacketHandler {
 
     val terrainData = TerrainData(level.number, level.name, width, height, spawn, exit, tilesIds)
     client.sendPacket(terrainData, ()=>Logger.ok("Terrain data sent!"))
+    Logger.info(s"Number of entities in this level: ${level.entityCount}")
+    for entity <- level.entities do
+      client.sendPacket(EntitySpawn(entity.id, entity.tpe.id, entity.position))
+      if entity.customColor.isDefined
+        client.sendPacket(EntityAppearance(entity.id, entity.customColor))
 }
