@@ -2,6 +2,7 @@ package com.electronwill.why
 package client
 
 import gametype._
+import ansi._
 
 object Client {
   inline val VERSION = "1.0.0-beta1"
@@ -47,6 +48,7 @@ object Client {
     if !level.terrain.isValid(newPosition) ||
         level.terrain(newPosition).isBlocking ||
         level.getEntity(newPosition).nonEmpty
+      setCursor(newPosition) // make the cursor show where the player looks at
       false
     else
       level.moveEntity(player, newPosition)
@@ -57,8 +59,9 @@ object Client {
         moveView(d)
       else
         val belowPlayer = level.terrain(oldPosition)
-        TUI.write(oldPosition.x, oldPosition.y, belowPlayer.character)
-        TUI.write(newPosition.x, newPosition.y, player.tpe.character, player.customColor)
+        writeChar(oldPosition, belowPlayer.character)
+        writeChar(newPosition, player.tpe.character, player.customColor)
+      setCursor(newPosition + d.vector) // make the cursor show where the player looks at
       true
 
   def redrawView(): Unit =
@@ -71,11 +74,17 @@ object Client {
       x <- levelView.xMin to levelView.xMax
       if level.terrain.isValid(x, y)
     do
-      val tile = level.terrain(x, y)
-      val entity = level.getEntity(x, y)
+      val pos = Vec2i(x, y)
+      val tile = level.terrain(pos)
+      val entity = level.getEntity(pos)
       if entity.nonEmpty
-        TUI.write(x, y, Symbol.of(entity.get), entity.get.customColor)
+        writeChar(pos, Symbol.of(entity.get), entity.get.customColor)
       else
-        TUI.write(x, y, Symbol.of(tile, level.terrain.around(x, y)))
+        writeChar(pos, Symbol.of(tile, level.terrain.around(pos)))
+
+  def writeChar(pos: Vec2i, character: Char, color: ColorSetting = ColorSetting(None,None)) =
+    TUI.write(pos.y+1, pos.x+1, character, color)
+
+  def setCursor(pos: Vec2i) = TUI.moveCursor(pos.y+1, pos.x+1)
 
 }
