@@ -4,14 +4,15 @@ package client
 import java.io._
 import ansi._
 
-/** Terminal UI
+/** Console output.
   *
   * ==Coordinates==
   * In the terminal, the first (upper-left) character is (y=1,x=1).
   * Y is the line number, starting at one, increasing downwards.
   * X is the column number, starting at one, increasing towards right.
   */
-object TUI {
+object ConsoleOutput {
+
   /** Runs the `tput` command and returns its output. */
   private def tput(cmd: String): String =
     val p = Runtime.getRuntime.exec(Array("tput", cmd))
@@ -35,13 +36,19 @@ object TUI {
     print(AnsiSequences.clearScreen)
     moveCursor(1, 1)
 
+  /** Gets the current line. */
   def cursorLine = _line
+
+  /** Gets the current column. */
   def cursorColumn = _col
+
+  /** Returns `(cursorLine, cursorColumn)` */
   def cursorPosition = Vec2i(_line, _col)
 
+  /** Moves the cursor to the specified position. */
   def moveCursor(line: Int, col: Int): Unit =
     assert(col > 0 && line > 0, s"Invalid position ($col, $line): x and y should be > 0")
-    // Optimization here: avoid to use the general moveTo to save some characters
+    // Optimization here: we avoid to use the general moveTo to save some characters
     if _col == 0 && _line == 0 // not initialized yet
       print(AnsiSequences.moveTo(line, col))
     else if col == _col
@@ -60,25 +67,20 @@ object TUI {
     _line = line
     _col = col
 
-  def write(line: Int, col: Int, ch: Char): Unit =
-    write(col, line, ch, ColorSetting(None, None))
-
-  def write(line: Int, col: Int, ch: Char, color: ColorSetting): Unit =
-    write(col, line, ch.toString, color)
+  /** Writes a colored char at the given position. */
+  def writeCharAt(line: Int, col: Int, ch: Char, color: ColorSetting = ColorSetting(None, None)): Unit =
+    writeStrAt(col, line, ch.toString, color)
 
   /** Writes a colored message of **one** line at the given position. */
-  def write(line: Int, col: Int, str: String, color: ColorSetting = ColorSetting(None, None)): Unit =
+  def writeStrAt(line: Int, col: Int, str: String, color: ColorSetting = ColorSetting(None, None)): Unit =
     moveCursor(col, line)
-    write(str, color)
+    writeStr(str, color)
 
-  def write(ch: Char): Unit = write(ch.toString)
-
-  def write(ch: Char, color: ColorSetting): Unit = write(ch.toString, color)
-
-  def write(str: String): Unit = write(str, ColorSetting(None, None))
+  /** Writes a colored char at the current position. */
+  def writeChar(ch: Char, color: ColorSetting = ColorSetting(None, None)): Unit = writeStr(ch.toString, color)
 
   /** Writes a colored message of **one** line at the current position. */
-  def write(str: String, color: ColorSetting) =
+  def writeStr(str: String, color: ColorSetting = ColorSetting(None, None)) =
     for fg <- color.fg do
       print(AnsiSequences.colorFg(fg))
     for bg <- color.bg do
@@ -86,7 +88,7 @@ object TUI {
 
     print(str)
 
-    if color.fg.nonEmpty || color.bg.nonEmpty
+    if color.isDefined
       print(AnsiSequences.resetSgr)
 
     _col += str.length

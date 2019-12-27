@@ -10,5 +10,5 @@ import java.io.File
     Logger.error(s"Uncaught exception in thread $t", ex)
   })
   val os = System.getProperty("os.name") + " " + System.getProperty("os.version")
-  Logger.info(s"Starting WHY client in a ${TUI.width}x${TUI.height} terminal, on $os")
+  Logger.info(s"Starting WHY client in a ${ConsoleOutput.width}x${ConsoleOutput.height} terminal, on $os")
   Client.connect(serverIP, serverPort)

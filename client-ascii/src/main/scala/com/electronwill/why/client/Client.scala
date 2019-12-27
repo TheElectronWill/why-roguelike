@@ -34,13 +34,13 @@ object Client {
   def moveView(d: Direction): Unit =
     levelView = d match
       case Direction.RIGHT =>
-        levelView.shift(TUI.width-2*VIEW_PADDING, 0)
+        levelView.shift(ConsoleOutput.width-2*VIEW_PADDING, 0)
       case Direction.LEFT =>
-        levelView.shift(-TUI.width+2*VIEW_PADDING, 0)
+        levelView.shift(-ConsoleOutput.width+2*VIEW_PADDING, 0)
       case Direction.UP =>
-        levelView.shift(0, -TUI.width+2*VIEW_PADDING)
+        levelView.shift(0, -ConsoleOutput.width+2*VIEW_PADDING)
       case Direction.DOWN =>
-        levelView.shift(0, TUI.width-2*VIEW_PADDING)
+        levelView.shift(0, ConsoleOutput.width-2*VIEW_PADDING)
     redrawView()
 
   def move(d: Direction): Boolean =
@@ -67,8 +67,8 @@ object Client {
       true
 
   def redrawView(): Unit =
-    TUI.clear()
-    Logger.info(s"Terminal size: ${TUI.width} x ${TUI.height}")
+    ConsoleOutput.clear()
+    Logger.info(s"Terminal size: ${ConsoleOutput.width} x ${ConsoleOutput.height}")
     Logger.info(s"Level size: (0, 0) to (${level.width}, ${level.height})")
     Logger.info(s"Player view: ${levelView.cornerMin} to ${levelView.cornerMax}")
     for
@@ -78,15 +78,13 @@ object Client {
     do
       val pos = Vec2i(x, y)
       val tile = level.terrain(pos)
-      val entity = level.getEntity(pos)
-      if entity.nonEmpty
-        writeChar(pos, Symbol.of(entity.get), entity.get.customColor)
-      else
-        writeChar(pos, Symbol.of(tile, level.terrain.around(pos)))
+      level.getEntity(pos) match
+        case Some(entity) => writeChar(pos, Symbol.of(entity), entity.customColor)
+        case None         => writeChar(pos, Symbol.of(tile, level.terrain.around(pos)))
 
   def writeChar(pos: Vec2i, character: Char, color: ColorSetting = ColorSetting(None,None)) =
-    TUI.write(pos.y+1, pos.x+1, character, color)
+    ConsoleOutput.writeCharAt(pos.y+1, pos.x+1, character, color)
 
-  def setCursor(pos: Vec2i) = TUI.moveCursor(pos.y+1, pos.x+1)
+  def setCursor(pos: Vec2i) = ConsoleOutput.moveCursor(pos.y+1, pos.x+1)
 
 }
