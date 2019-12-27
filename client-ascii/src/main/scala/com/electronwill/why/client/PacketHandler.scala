@@ -75,11 +75,9 @@ object PacketHandler {
       Client.level.terrain(position) = Tiles.get(tileId)
 
   private def withEntity(entityId: EntityId, f: ClientEntity => Unit) =
-    val entity = Client.level.getEntity(entityId).asInstanceOf[ClientEntity]
-    if entity == null
-      noSuchEntity(entityId)
-    else
-      f(entity)
+    Client.level.getEntity(entityId) match
+      case None => noSuchEntity(entityId)
+      case Some(entity) => f(entity)
 
   private def noSuchEntity(entityId: EntityId) =
     val msg = s"No entity with id ${entityId}"

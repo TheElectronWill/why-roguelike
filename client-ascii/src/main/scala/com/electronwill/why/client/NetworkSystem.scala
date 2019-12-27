@@ -2,6 +2,7 @@ package com.electronwill
 package why
 package client
 
+import protocol.Disconnect
 import protocol.client._
 import protocol.server._
 
@@ -22,16 +23,25 @@ class NetworkSystem(serverAddress: String, serverPort: Int) {
   private var reader = PacketReader(input)
 
   def start() =
-    Logger.info("Starting the network system")
-    send(ConnectionRequest(Client.VERSION, Client.username))
-    Thread(reader).start()
+    if !reader.running
+      Logger.info("Starting the network system")
+      Runtime.getRuntime.addShutdownHook(Thread(() => {
+        stop()
+      }))
+      reader.running = true
+      Thread(reader).start()
+      send(ConnectionRequest(Client.VERSION, Client.username))
+      Logger.ok("Network system started!")
 
   def stop() =
     reader.running = false
+    send(Disconnect(false, "Client stopped"))
+    socket.close()
 
   def send(packet: ClientPacket): Unit =
     val packetOutput = ExpandingOutput(32, bufferPool)
     ClientPacket.write(packet, packetOutput)
+    Logger.info(s"Sending packet $packet")
     val packetBuffer = packetOutput.asBuffer
     output.writeShort(packetBuffer.readableBytes)
     output.write(packetBuffer)

@@ -60,8 +60,11 @@ object Server {
 
   def removePlayer(client: WhyClientAttach): Unit =
     val player = playersByClient.remove(client.clientId)
-    for
-      p <- player
-    do
-      p.level.deleteEntity(p)
+    player match
+      case None =>
+        Logger.warn(s"Player ${client.clientId} has already been removed!")
+      case Some(p) =>
+        p.level.deleteEntity(p)
+        client.disconnect()
+        Logger.ok(s"Removed player ${client.clientId}")
 }

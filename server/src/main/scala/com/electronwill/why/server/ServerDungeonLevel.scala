@@ -2,7 +2,7 @@ package com.electronwill
 package why.server
 
 import why.gametype._
-import why.{DungeonLevel, Vec2i, Grid}
+import why.{DungeonLevel, Vec2i, Grid, Logger}
 import why.protocol.server.{EntitySpawn, EntityDelete}
 import gametype.{Entities, ServerEntity, Player}
 import collection.RecyclingIndex
@@ -11,8 +11,8 @@ import scala.collection.mutable.LongMap
 class ServerDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, terrain: Grid[RegisteredType])
   extends DungeonLevel[ServerEntity](number: Int, name, spawn, exit, terrain) {
 
-  def players: Iterator[Player] =
-    for entity <- entityIds.valuesIterator
+  def players: Iterable[Player] =
+    for (id,entity) <- entityIds
     if entity.tpe == Entities.Player
     yield entity.asInstanceOf[Player]
 

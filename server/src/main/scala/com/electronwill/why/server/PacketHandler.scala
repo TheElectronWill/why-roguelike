@@ -81,6 +81,14 @@ object PacketHandler {
               val movePacket = EntityMove(player.id, destination)
               Server.levelMates(player).foreach(_.client.sendPacket(movePacket))
 
+      case Disconnect(error, msg) =>
+        Server.removePlayer(client)
+        if error
+          Logger.warn(s"Client disconnected with an error: $msg")
+
+      case Warning(msg) =>
+        Logger.warn(s"Client issued a warning: $msg")
+
   def sendTerrainData(level: ServerDungeonLevel, client: WhyClientAttach) =
     val (width, height) = (level.width, level.height)
     val spawn = level.spawnPosition

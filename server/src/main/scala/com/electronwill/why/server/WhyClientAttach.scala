@@ -62,6 +62,7 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
   def disconnect() =
     key.cancel()
     channel.close()
+    Logger.ok(s"Connection closed for client $clientId.")
 }
 object WhyClientAttach {
   private val lastId = AtomicInteger(0)
