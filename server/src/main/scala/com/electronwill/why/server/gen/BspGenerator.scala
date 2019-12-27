@@ -68,29 +68,37 @@ class BspGenerator(private val minWidth: Int,
 
   private def connectChilds(n: BspNode, tiles: Grid[RegisteredType]): Unit =
     if n.isLeaf then return
-    val a = n.childA.box.randomPoint
-    val b = n.childB.box.randomPoint
+    val (a,b) =
+      if n.childA.isLeaf
+        // We can introduce some randomness when connecting two leafs
+        (n.childA.box.randomPoint, n.childB.box.randomPoint)
+      else
+        // We CANNOT choose the points randomly when connecting two higher-level nodes,
+        // because otherwise we have no guarantee that there is a room containing the points.
+        (n.childA.box.roundedCenter, n.childB.box.roundedCenter)
     makeCorridor(a, b, tiles)
     connectChilds(n.childA, tiles)
     connectChilds(n.childB, tiles)
 
   private def makeCorridor(a: Vec2i, b: Vec2i, tiles: Grid[RegisteredType]) =
     val diff = b-a
-    // horizontal (x) part
-    if diff.x != 0
-      for x <- a.x to b.x by diff.x.sign do
-        tiles(x, a.y) = Tiles.Floor
-
+    Logger.info(s"Connecting $a and $b")
     // vertical (y) part
     if diff.y != 0
       for y <- a.y to b.y by diff.y.sign do
-        tiles(b.x, y) = Tiles.Floor
+        tiles(a.x, y) = Tiles.Floor
+
+    // horizontal (x) part
+    if diff.x != 0
+      for x <- a.x to b.x by diff.x.sign do
+        tiles(x, b.y) = Tiles.Floor
 
   /** Creates a room of random size inside of the given box. */
   private def makeRoom(node: BspNode, tiles: Grid[RegisteredType]) =
     val w = Random.between(2, node.box.width+1)
     val h = Random.between(2, node.box.height+1)
     val room = Box.center(node.box.roundedCenter, w, h)
+    Logger.info(s"Generating room between ${room.cornerMin} and ${room.cornerMax}")
     for
       x <- room.xMin to room.xMax
       y <- room.yMin to room.yMax

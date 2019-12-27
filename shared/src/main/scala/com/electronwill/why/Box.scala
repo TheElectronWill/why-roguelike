@@ -60,8 +60,9 @@ object Box {
   def corners(min: Vec2i, max: Vec2i) = Box(min.x, min.y, max.x, max.y)
   def intervals(x: (Int, Int), y: (Int, Int)) = Box(x._1, y._1, x._2, y._2)
   def center(c: Vec2i, width: Int, height: Int) = {
-    val diff = Vec2i(width/2, height/2)
-    Box.corners(c-diff, c+diff)
+    val diffA = Vec2i(width/2, height/2)
+    val diffB = Vec2i(width, height) - diffA // useful when width is an odd number
+    Box.corners(c-diffA, c+diffB)
   }
   def positive(width: Int, height: Int) = Box(0, 0, width, height)
 }
