@@ -3,6 +3,7 @@ package client
 
 import gametype._
 import ansi._
+import protocol.client.PlayerMove
 
 object Client {
   inline val VERSION = "1.0.0-beta1"
@@ -62,6 +63,7 @@ object Client {
         writeChar(oldPosition, belowPlayer.character)
         writeChar(newPosition, player.tpe.character, player.customColor)
       setCursor(newPosition + d.vector) // make the cursor show where the player looks at
+      network.send(PlayerMove(newPosition))
       true
 
   def redrawView(): Unit =

@@ -10,6 +10,7 @@ object ServerPacket extends PacketRegistry[ServerPacket] {
   register(EntityMove)
   register(EntitySpawn)
   register(IdRegistration)
+  register(SetPlayerId)
   register(TerrainData)
   register(TileUpdate)
 
