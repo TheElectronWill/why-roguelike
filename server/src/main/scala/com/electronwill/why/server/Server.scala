@@ -2,18 +2,9 @@ package com.electronwill
 package why
 package server
 
-import niol.network.tcp._ // com.electronwill.niol
-import niol.buffer.storage._
+import gametype._
 
 import nightconfig.core.file.FileConfig
-
-import gametype._
-import why.gametype._
-import why.DungeonLevel
-import why.protocol._
-import why.protocol.server._
-import why.protocol.client._
-
 import scala.collection.mutable.LongMap
 
 object Server {
@@ -46,11 +37,8 @@ object Server {
     Logger.ok(s"Level $n generated")
     lvl
 
-  /** Gets all the players in the same level as this player */
-  def levelMates(player: Player) =
-    for other <- playersByClient.values
-    if other != player && other.level == player.level
-    yield other
+  /** All the connected players. */
+  def players: Iterable[Player] = playersByClient.values
 
   def registerPlayer(player: Player, client: WhyClientAttach): Unit =
     playersByClient(client.clientId) = player
