@@ -97,7 +97,7 @@ class BspGenerator(private val minWidth: Int,
   private def makeRoom(node: BspNode, tiles: Grid[RegisteredType]) =
     val w = Random.between(2, node.box.width+1)
     val h = Random.between(2, node.box.height+1)
-    val room = Box.center(node.box.roundedCenter, w, h)
+    val room = Box.around(node.box.roundedCenter, w, h)
     Logger.info(s"Generating room between ${room.cornerMin} and ${room.cornerMax}")
     for
       x <- room.xMin to room.xMax

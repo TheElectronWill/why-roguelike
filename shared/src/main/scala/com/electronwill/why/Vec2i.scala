@@ -8,7 +8,8 @@ final case class Vec2i(x: Int, y: Int) {
   def +(v: Vec2i) = Vec2i(x+v.x, y+v.y)
   def -(v: Vec2i) = Vec2i(x-v.x, y-v.y)
   def *(k: Int) = Vec2i(k*x, k*y)
-  def unary_-() = Vec2i(-x, -y)
+  def /(k: Int) = Vec2i(x/k, y/k)
+  def unary_- = Vec2i(-x, -y)
 
   def squaredNorm: Int = x*x + y*y
 
@@ -33,6 +34,8 @@ object Vec2i {
     val y = Random.between(minInclusive.y, maxExclusive.y)
     new Vec2i(x, y)
   }
+
+  def rounded(x: Double, y: Double) = Vec2i(x.round.toInt, y.round.toInt)
 
   val ZERO = Vec2i(0,0)
   val RIGHT = Vec2i(1,0)

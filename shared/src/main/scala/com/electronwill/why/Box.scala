@@ -59,10 +59,16 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
 object Box {
   def corners(min: Vec2i, max: Vec2i) = Box(min.x, min.y, max.x, max.y)
   def intervals(x: (Int, Int), y: (Int, Int)) = Box(x._1, y._1, x._2, y._2)
-  def center(c: Vec2i, width: Int, height: Int) = {
-    val diffA = Vec2i(width/2, height/2)
-    val diffB = Vec2i(width, height) - diffA // useful when width is an odd number
-    Box.corners(c-diffA, c+diffB)
-  }
+
+  def around(c: Vec2i, width: Int, height: Int) =
+    val toAdd = Vec2i(math.max(0, width-1), math.max(0, height-1)) // without the center
+    val a = toAdd / 2 // rounded down
+    val b = toAdd - a // what remains
+    Box.corners(c-a, c+b)
+
+  def center(c: Vec2i, widthRadius: Int, heightRadius: Int) =
+    val vec = Vec2i(widthRadius, heightRadius)
+    Box.corners(c-vec, c+vec)
+
   def positive(width: Int, height: Int) = Box(0, 0, width, height)
 }
