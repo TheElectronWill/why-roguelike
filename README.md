@@ -37,6 +37,12 @@ And in another processus the client:
 java -jar client-assembly-0.1.0-SNAPSHOT.jar localhost 4242
 ```
 
+### Logs
+The server displays its log in the console that started it.
+
+The client cannot do this, since it's displaying the game. It writes its log to the file `why-client.log`.
+You can run `tail +1f why-client.log` to get a real-time view of this file.
+
 ## Playing
 You move with the arrows.
 Nothing else for now :-)
