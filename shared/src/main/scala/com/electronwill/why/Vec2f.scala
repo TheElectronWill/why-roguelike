@@ -22,3 +22,8 @@ final case class Vec2f(x: Float, y: Float) {
 
   override def toString(): String = s"($x, $y)"
 }
+object Vec2f {
+  val ZERO = Vec2f(0, 0)
+  val HALF = Vec2f(0.5, 0.5)
+  val ONE  = Vec2f(1, 1)
+}

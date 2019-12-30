@@ -11,6 +11,23 @@ final case class Vec2i(x: Int, y: Int) {
   def /(k: Int) = Vec2i(x/k, y/k)
   def unary_- = Vec2i(-x, -y)
 
+  def addX(x: Int) = Vec2i(this.x + x, y)
+  def addY(y: Int) = Vec2i(x, this.y + y)
+
+  def coordInDirection(dir: Direction): Int = if dir.isVertical then y else x
+
+  def isNotAfter(other: Vec2i, dir: Direction): Boolean = dir match
+    case Direction.UP    => y >= other.y
+    case Direction.DOWN  => y <= other.y
+    case Direction.RIGHT => x <= other.x
+    case Direction.LEFT  => x >= other.x
+
+  def isBefore(other: Vec2i, dir: Direction): Boolean = dir match
+    case Direction.UP    => y > other.y
+    case Direction.DOWN  => y < other.y
+    case Direction.RIGHT => x < other.x
+    case Direction.LEFT  => x > other.x
+
   def squaredNorm: Int = x*x + y*y
 
   def norm: Double = sqrt(squaredNorm.toDouble)
@@ -24,6 +41,8 @@ final case class Vec2i(x: Int, y: Int) {
 
   /** @return the snake/manhattan distance of this vector */
   def snakeDist(other: Vec2i): Int = abs(x-other.x) + abs(y-other.y)
+
+  def toFloating: Vec2f = Vec2f(x, y)
 
   override def toString(): String = s"($x, $y)"
 }

@@ -31,7 +31,9 @@ object Client {
 
   def initView() =
     levelView = Box.positive(level.width, level.height)//Box.center(player.position, TUI.width, TUI.height)
+    level.updatePlayerVision(player.position, Direction.LEFT)
     redrawView()
+    setCursor(player.position + Direction.LEFT.vector)
 
   def moveView(d: Direction): Unit =
     levelView = d match
@@ -55,15 +57,18 @@ object Client {
       false
     else
       level.moveEntity(player, newPosition)
+      level.updatePlayerVision(newPosition, d)
       if  d == Direction.UP && newPosition.y - levelView.yMin < VIEW_PADDING ||
           d == Direction.DOWN && levelView.yMax - newPosition.y < VIEW_PADDING ||
           d == Direction.RIGHT && levelView.xMax - newPosition.x < VIEW_PADDING ||
           d == Direction.LEFT && newPosition.x - levelView.xMin < VIEW_PADDING
         moveView(d)
       else
-        val belowPlayer = level.terrain(oldPosition)
-        writeChar(oldPosition, belowPlayer.character)
-        writeChar(newPosition, player.tpe.character, player.customColor)
+        redrawView() // FIXME: I redraw the view to update the visibility of the terrain, but there is a better way
+        // TODO optimize movement like before
+        //val belowPlayer = level.getVisibleTile(oldPosition)
+        //writeChar(oldPosition, belowPlayer.character)
+        //writeChar(newPosition, player.tpe.character, player.customColor)
       setCursor(newPosition + d.vector) // make the cursor show where the player looks at
       network.send(PlayerMove(newPosition))
       true
@@ -79,7 +84,7 @@ object Client {
       if level.terrain.isValid(x, y)
     do
       val pos = Vec2i(x, y)
-      val tile = level.terrain(pos)
+      val tile = level.getVisibleTile(pos)
       level.getEntity(pos) match
         case Some(entity) => writeChar(pos, Symbol.of(entity), entity.customColor)
         case None         => writeChar(pos, Symbol.of(tile, level.terrain.around(pos)))

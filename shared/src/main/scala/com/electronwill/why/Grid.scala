@@ -27,6 +27,8 @@ final class Grid[A : ClassTag](val width: Int,
     else
       storage(idx(x, y)) = t
 
+  def updateAll(f: A => A): Unit = storage.mapInPlace(f)
+
   def remove(pos: Vec2i): Unit = update(pos, default)
   def remove(x: Int, y: Int): Unit = update(x, y, default)
 
@@ -50,11 +52,13 @@ final class Grid[A : ClassTag](val width: Int,
   )
   def around(x: Int, y: Int): (A,A,A,A) = around(Vec2i(x, y))
 
-  def squareAround(center: Vec2i, radius: Int): Seq[A] =
+  def coordSquareAround(center: Vec2i, radius: Int): Seq[Vec2i] =
     for
       x <- center.x-radius to center.x+radius
       y <- center.y-radius to center.y+radius
       if isValid(x, y)
     yield
-      this(Vec2i(x, y))
+      Vec2i(x, y)
+
+  def squareAround(center: Vec2i, radius: Int): Seq[A] = coordSquareAround(center, radius).map(apply)
 }
