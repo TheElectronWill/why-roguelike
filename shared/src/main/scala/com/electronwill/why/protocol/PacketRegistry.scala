@@ -1,6 +1,7 @@
 package com.electronwill
 package why.protocol
 
+import why.Logger
 import niol.{NiolInput, NiolOutput}
 import scala.util.{Try, Success, Failure}
 import scala.reflect.ClassTag
@@ -16,6 +17,7 @@ abstract class PacketRegistry[P <: Packet] {
 
   def parse(in: NiolInput): Try[P] =
     val id = in.readUnsignedByte()
+    Logger.info(s"Packet id: $id")
     val parser = parsers(id)
     if parser == null
       Failure(UnknownPacketException(id, getClass.getSimpleName))
