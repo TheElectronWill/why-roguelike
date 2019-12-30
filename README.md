@@ -18,6 +18,25 @@ To compile, simply run
 You can also run sbt's shell with `./sbt` and then execute commands like
 `compile`, `test`, etc.
 
+## Running the game
+First, you'll need to build the client and server jar files.
+```bash
+./sbt assembly
+```
+The `assembly` command produces:
+- `server/target/scala-0.21/server-assembly-0.1.0-SNAPSHOT.jar`
+- `client-ascii/target/scala-0.21/client-assembly-0.1.0-SNAPSHOT.jar`
+
+You can now run the server:
+```bash
+java -jar server-assembly-0.1.0-SNAPSHOT.jar
+```
+
+And in another processus the client:
+```bash
+java -jar client-assembly-0.1.0-SNAPSHOT.jar localhost 4242
+```
+
 ## Warning: experimental Scala version
 Because it's fun to learn new things (and because I'm a contributor),
 this project doesn't use Scala 2.x but Dotty, an experimental research project
