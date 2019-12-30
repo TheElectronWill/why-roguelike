@@ -51,7 +51,7 @@ object Shapes {
     */
   def isoTriangle(top: Vec2i, height: Int, dir: Direction): Seq[Vec2i] =
     (0 to height).flatMap { h =>
-      val a = dir.opposite.vector*h
+      val a = dir.right.vector*h
       Seq(a, -a).distinct.map(top + dir.vector*h + _)
     }
 
@@ -65,7 +65,7 @@ object Shapes {
       h <- 0 to height // from base to top
       perp <- -h to h // perpendicular to the height of the triangle
     yield
-      top + dir.vector*h + dir.opposite.vector*perp
+      top + dir.vector*h + dir.right.vector*perp
 
   // --- RECTANGLES ---
   /** Generates a rectangle. */
