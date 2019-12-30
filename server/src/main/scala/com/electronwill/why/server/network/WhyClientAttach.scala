@@ -48,6 +48,7 @@ class WhyClientAttach(sci: SCI[WhyClientAttach], channel: SocketChannel, key: Se
     packet match
       case Failure(e) =>
         Logger.error(s"Error while handling incoming data from client $clientId", e)
+        Logger.warn("Disconnecting the client.")
         disconnect()
 
       case Success(p) =>
