@@ -78,6 +78,12 @@ object PacketHandler {
     case TileUpdate(position, tileId) =>
       Client.level.terrain(position) = Tiles.get(tileId)
 
+    case Warning(msg) =>
+      Logger.warn(s"Received a warning from the server: $msg")
+
+    case unknown =>
+      Logger.error(s"Unknown packet: $unknown")
+
   private def withEntity(entityId: EntityId, f: ClientEntity => Unit) =
     Client.level.getEntity(entityId) match
       case None => noSuchEntity(entityId)
