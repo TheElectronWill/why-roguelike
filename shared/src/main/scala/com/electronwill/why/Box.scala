@@ -2,7 +2,7 @@ package com.electronwill.why
 
 import scala.util.Random
 
-final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) {
+final class Box private(private val xmin: Int, private val ymin: Int, private val xmax: Int, private val ymax: Int) {
   def xMin: Int = xmin
   def xMax: Int = xmax
   def yMin: Int = ymin
@@ -34,7 +34,7 @@ final class Box private(private val xmin: Int, ymin: Int, xmax: Int, ymax: Int) 
       else yMax
     Vec2i(x, y)
 
-  def shift(x: Int, y: Int) = Box(xmin+x, ymin+y, xmax+x, ymax+x)
+  def shift(x: Int, y: Int) = Box(xmin+x, ymin+y, xmax+x, ymax+y)
 
   /** Creates two sub-boxes by splitting this box in two.
     * By default the box is cut along its longer axis.

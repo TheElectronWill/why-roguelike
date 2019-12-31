@@ -9,7 +9,7 @@ import protocol.client.PlayerMove
 
 object Client {
   inline val VERSION = "1.0.0-beta1"
-  inline val VIEW_PADDING = 2
+  inline val VIEW_PADDING = 4
 
   var username = "player"
   var level: ClientDungeonLevel = _
@@ -30,7 +30,12 @@ object Client {
     Thread(inputHandler).start()
 
   def initView() =
-    levelView = Box.positive(level.width, level.height)//Box.center(player.position, TUI.width, TUI.height)
+    levelView =
+      if level.width <= ConsoleOutput.width && level.height <= ConsoleOutput.height
+        Box.positive(level.width, level.height)
+      else
+        Box.center(player.position, ConsoleOutput.width/2, ConsoleOutput.height/2)
+
     level.updatePlayerVision(player.position, Direction.LEFT)
     redrawView()
     setCursor(player.position + Direction.LEFT.vector)
@@ -42,9 +47,9 @@ object Client {
       case Direction.LEFT =>
         levelView.shift(-ConsoleOutput.width+2*VIEW_PADDING, 0)
       case Direction.UP =>
-        levelView.shift(0, -ConsoleOutput.width+2*VIEW_PADDING)
+        levelView.shift(0, -ConsoleOutput.height+2*VIEW_PADDING)
       case Direction.DOWN =>
-        levelView.shift(0, ConsoleOutput.width-2*VIEW_PADDING)
+        levelView.shift(0, ConsoleOutput.height-2*VIEW_PADDING)
     redrawView()
 
   def move(d: Direction): Boolean =
@@ -90,8 +95,11 @@ object Client {
         case None         => writeChar(pos, Symbol.of(tile, level.terrain.around(pos)))
 
   def writeChar(pos: Vec2i, character: Char, color: ColorSetting = ColorSetting(None,None)) =
-    ConsoleOutput.writeCharAt(pos.y+1, pos.x+1, character, color)
+    val posInView = pos - levelView.cornerMin
+    ConsoleOutput.writeCharAt(posInView.y+1, posInView.x+1, character, color)
 
-  def setCursor(pos: Vec2i) = ConsoleOutput.moveCursor(pos.y+1, pos.x+1)
+  def setCursor(pos: Vec2i) =
+    val posInView = pos - levelView.cornerMin
+    ConsoleOutput.moveCursor(posInView.y+1, posInView.x+1)
 
 }

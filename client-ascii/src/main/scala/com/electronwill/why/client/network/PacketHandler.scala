@@ -46,6 +46,8 @@ object PacketHandler {
         Logger.info("Modifying player's entity id")
         Client.player.id = entityId
         Client.level.addEntity(Client.player, Client.level.spawnPosition)
+        Logger.info("Reinitializing player's view")
+        Client.initView()
       else // spawn the player for the first time
         Logger.info("Initializing the player")
         Client.player = ClientEntity(entityId, playerType)
