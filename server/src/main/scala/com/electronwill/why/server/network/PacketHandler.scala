@@ -62,6 +62,7 @@ object PacketHandler {
       currentLevel.deleteEntity(player)
       sendLevelData(nextLevel, client)
       nextLevel.addEntity(player, nextLevel.spawnPosition)
+      client.sendPacket(SetPlayerId(player.id))
 
     // non-stairs: move in the same level
     else

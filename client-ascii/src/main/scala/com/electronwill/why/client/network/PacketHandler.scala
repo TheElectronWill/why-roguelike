@@ -42,16 +42,22 @@ object PacketHandler {
 
     case SetPlayerId(entityId) =>
       val playerType = Entities.get("player")
-      Client.player = ClientEntity(entityId, playerType)
-      Client.level.addEntity(Client.player, Client.level.spawnPosition)
-      Logger.ok("Player instance created!")
+      if Client.player != null // move the player to another level
+        Logger.info("Modifying player's entity id")
+        Client.player.id = entityId
+        Client.level.addEntity(Client.player, Client.level.spawnPosition)
+      else // spawn the player for the first time
+        Logger.info("Initializing the player")
+        Client.player = ClientEntity(entityId, playerType)
+        Client.level.addEntity(Client.player, Client.level.spawnPosition)
+        Logger.ok("Player instance created!")
 
-      Logger.info("Initializing player's view...")
-      Client.initView()
-      Logger.ok("Player's view initialized!")
+        Logger.info("Initializing player's view...")
+        Client.initView()
+        Logger.ok("Player's view initialized!")
 
-      Client.makeInteractive()
-      Logger.ok("Interactive mode enabled.")
+        Client.makeInteractive()
+        Logger.ok("Interactive mode enabled.")
 
     case IdRegistration(tiles, entities) =>
       Logger.info(s"Registering ${tiles.length} types of tiles and ${entities.length} types of entities.")

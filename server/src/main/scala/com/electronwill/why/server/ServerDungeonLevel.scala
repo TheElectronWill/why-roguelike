@@ -39,7 +39,7 @@ class ServerDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, t
     entityIds.remove(id.id)
     e.deinit()
     val despawnPacket = EntityDelete(id)
-    notifyPlayers(despawnPacket, e)
+    notifyPlayers(despawnPacket, null)
 
   /** Moves an entity and notifies the relevant players. */
   override def moveEntity(e: ServerEntity, to: Vec2i): Unit =
