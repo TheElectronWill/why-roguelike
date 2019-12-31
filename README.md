@@ -32,10 +32,12 @@ You can now run the server:
 java -jar server-assembly-0.1.0-SNAPSHOT.jar
 ```
 
-And in another processus the client:
+And then **open a new Terminal** and run the client:
 ```bash
 java -jar client-assembly-0.1.0-SNAPSHOT.jar localhost 4242
 ```
+
+You can replace `localhost` by the server's address if it is on a remote machine.
 
 ### Logs
 The server displays its log in the console that started it.
