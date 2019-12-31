@@ -126,7 +126,7 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
     val start = viewer + dir.vector // in front of `viewer`
     val vision = castLine(start, dir).to(ArrayBuffer)
     val centralObstacle = vision.last
-    Logger.info(s"Central obstacle: $centralObstacle")
+    //Logger.info(s"Central obstacle: $centralObstacle")
 
     halfVision(vision, viewer, dir, dir.vector + dir.right.vector, centralObstacle)
     halfVision(vision, viewer, dir, dir.vector + dir.left.vector, centralObstacle)
@@ -134,7 +134,7 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
 
   /** Computes half of the triangular field of view. Avoids to use full raycasting as much as possible. */
   private def halfVision(buff: ArrayBuffer[Vec2i], origin: Vec2i, dir: Direction, shift: Vec2i, centralObstacle: Vec2i): Unit =
-    Logger.info(s"Computing half vision field with shift = $shift")
+    //Logger.info(s"Computing half vision field with shift = $shift")
     var lineStart = origin + shift
     var useDirect = true
     var closestBlocked = centralObstacle
@@ -143,17 +143,17 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
       closestBlocked = visionLine(buff, origin, lineStart, dir, closestBlocked, useDirect)
       lineStart += shift
       if closestBlocked.isNotAfter(lineStart, dir)
-        Logger.warn(s"Line start was $lineStart but has been modified because of an obstacle")
+        //Logger.warn(s"Line start was $lineStart but has been modified because of an obstacle")
         lineStart += dir.vector
         useDirect = false
       else
         useDirect = true
-      Logger.info(s"New line start: $lineStart")
-    Logger.warn("Exit halfVision()")
+      //Logger.info(s"New line start: $lineStart")
+    //Logger.warn("Exit halfVision()")
 
   /** Computes a line of vision. See `test raycasting.ods`. */
   private def visionLine(visible: ArrayBuffer[Vec2i], visionOrigin: Vec2i, start: Vec2i, dir: Direction, closestBlocked: Vec2i, useDirect: Boolean): Vec2i =
-    Logger.info(s"Computing vision line from $start towards $dir")
+    //Logger.info(s"Computing vision line from $start towards $dir")
     var newClosestBlocked = closestBlocked
     var p = start
     var direct = useDirect
@@ -164,7 +164,7 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
       if direct
         visible += p
         if isBlocked(p)
-          Logger.info(s"Switching to non-direct mode after $p")
+          //Logger.info(s"Switching to non-direct mode after $p")
           direct = false
           shadow = true
           newClosestBlocked = p
@@ -179,9 +179,9 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
           shadow = false
         else
           val reachable = canReachCenter(p, visionOrigin)
-          Logger.info(s"Is $visionOrigin reachable from $p: $reachable")
+          //Logger.info(s"Is $visionOrigin reachable from $p: $reachable")
           if reachable
-            Logger.info(s"Switching to direct mode after $p")
+            //Logger.info(s"Switching to direct mode after $p")
             visible += p
             direct = true // go back to direct mode to avoid raycasting and improve performance
       end if // direct
