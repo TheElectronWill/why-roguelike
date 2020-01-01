@@ -1,7 +1,9 @@
 package com.electronwill.why
 
-// See https://dotty.epfl.ch/docs/reference/contextual/extension-methods.html
 import scala.util.Random
+import scala.collection.Seq
+
+// See https://dotty.epfl.ch/docs/reference/contextual/extension-methods.html
 
 def [A](s: Seq[A]) randomElement: A = s(Random.between(0, s.size))
 

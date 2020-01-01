@@ -3,6 +3,7 @@ package client
 
 import ansi._
 import gametype._
+import geom._
 import console.{Symbol, ConsoleOutput, InputHandler}
 import network.NetworkSystem
 import protocol.client.PlayerMove

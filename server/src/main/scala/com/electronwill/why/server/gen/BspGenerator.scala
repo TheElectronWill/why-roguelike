@@ -1,12 +1,14 @@
 package com.electronwill
-package why.server.gen
+package why
+package server.gen
+
+
+import geom._
+import gametype._
+import server.gametype._
+import server.ServerDungeonLevel
 
 import collection.SimpleBag
-import why._
-import why.gametype._
-import why.server.gametype._
-import why.server.ServerDungeonLevel
-
 import scala.util.Random
 
 /**

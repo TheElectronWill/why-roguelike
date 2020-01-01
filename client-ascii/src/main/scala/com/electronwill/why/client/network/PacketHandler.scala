@@ -3,10 +3,11 @@ package why.client
 package network
 
 import gametype._
+import why.geom._
 import why.gametype.{EntityId, RegisteredType}
 import why.protocol.Warning
 import why.protocol.server._
-import why.{Logger, Grid}
+import why.Logger
 
 /** Reacts to received packets. */
 object PacketHandler {

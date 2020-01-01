@@ -1,6 +1,8 @@
 package com.electronwill.why
 package client.console
 
+import geom._
+
 import sys.process._
 import java.nio.charset.StandardCharsets.UTF_8
 

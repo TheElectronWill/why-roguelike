@@ -3,7 +3,6 @@ package why.protocol
 package server
 
 import niol._
-import why.Vec2i
 import why.gametype.EntityId
 
 case class SetPlayerId(entityId: EntityId) extends ServerPacket(8) {

@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.Vec2i
+import why.geom.Vec2i
 import why.gametype.EntityId
 
 case class EntityMove(entityId: EntityId, newPosition: Vec2i) extends ServerPacket(5) {

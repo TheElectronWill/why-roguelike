@@ -1,4 +1,4 @@
-package com.electronwill.why
+package com.electronwill.why.geom
 
 enum Direction(val vector: Vec2i) extends java.lang.Enum[Direction] {
   case UP extends Direction(Vec2i.UP)

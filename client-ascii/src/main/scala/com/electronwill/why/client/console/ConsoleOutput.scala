@@ -2,6 +2,7 @@ package com.electronwill.why
 package client.console
 
 import ansi._
+import geom._
 import java.io._
 
 /** Console output.

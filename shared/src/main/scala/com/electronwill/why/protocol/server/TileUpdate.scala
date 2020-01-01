@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.Vec2i
+import why.geom.Vec2i
 
 case class TileUpdate(position: Vec2i, newTypeId: Int) extends ServerPacket(7) {
   def writeData(out: NiolOutput): Unit =

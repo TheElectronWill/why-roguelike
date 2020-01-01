@@ -2,7 +2,8 @@ package com.electronwill
 package why.server
 
 import why.gametype._
-import why.{DungeonLevel, Vec2i, Grid, Logger}
+import why.geom._
+import why.{DungeonLevel, Logger}
 import why.protocol.server.{ServerPacket, EntitySpawn, EntityDelete, EntityMove}
 import gametype.{Entities, ServerEntity, Player}
 import collection.RecyclingIndex

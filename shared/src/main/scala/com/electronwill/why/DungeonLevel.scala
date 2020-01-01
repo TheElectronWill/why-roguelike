@@ -1,6 +1,7 @@
 package com.electronwill
 package why
 
+import geom.{_, given}
 import gametype._
 import collection.RecyclingIndex
 import scala.collection.mutable.{ArrayBuffer, LongMap}

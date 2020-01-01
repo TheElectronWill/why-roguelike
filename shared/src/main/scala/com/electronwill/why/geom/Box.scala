@@ -1,4 +1,4 @@
-package com.electronwill.why
+package com.electronwill.why.geom
 
 import scala.util.Random
 

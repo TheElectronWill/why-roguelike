@@ -1,6 +1,7 @@
-package com.electronwill.why.server.gen
+package com.electronwill.why
+package server.gen
 
-import com.electronwill.why.Box
+import geom.Box
 
 class BspTree(region: Box) {
   val root = BspNode(region)

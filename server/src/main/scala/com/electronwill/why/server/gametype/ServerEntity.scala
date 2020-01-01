@@ -3,6 +3,7 @@ package why.server
 package gametype
 
 import why.gametype._
+import why.geom._
 import why._
 
 abstract class ServerEntity(name: String) extends Entity(name) {

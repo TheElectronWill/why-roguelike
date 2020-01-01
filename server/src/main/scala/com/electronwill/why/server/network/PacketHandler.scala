@@ -4,6 +4,7 @@ package network
 
 import gametype._
 import why._
+import why.geom._
 import why.gametype._
 import why.protocol._
 import why.protocol.client._

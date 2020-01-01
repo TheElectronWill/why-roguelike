@@ -2,7 +2,6 @@ package com.electronwill
 package why.protocol
 
 import niol._
-import why.Vec2i
 import server.ServerPacket
 import client.ClientPacket
 

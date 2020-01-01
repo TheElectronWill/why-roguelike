@@ -1,7 +1,7 @@
 package com.electronwill.why
 package ansi
 
-import Direction._
+import geom._
 import Color._
 
 /** Terminal control sequences.
@@ -25,10 +25,10 @@ object AnsiSequences {
   // cursor control with CSI sequences
   def move(dir: Direction, n: Int) =
     val dirChar = dir match
-      case UP    => 'A'
-      case DOWN  => 'B'
-      case RIGHT => 'C'
-      case LEFT  => 'D'
+      case Direction.UP    => 'A'
+      case Direction.DOWN  => 'B'
+      case Direction.RIGHT => 'C'
+      case Direction.LEFT  => 'D'
     csi(dirChar, n)
 
   def moveLineUp(n: Int) = csi('E', n)

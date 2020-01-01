@@ -3,7 +3,8 @@ package why.client
 
 import collection.RecyclingIndex
 import gametype._
-import why.{DungeonLevel, Direction, Grid, Vec2i}
+import why.geom._
+import why.DungeonLevel
 import why.gametype.{EntityId, RegisteredType}
 import Visibility._
 

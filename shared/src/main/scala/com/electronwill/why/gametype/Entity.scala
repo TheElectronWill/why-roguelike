@@ -1,6 +1,7 @@
 package com.electronwill.why
 package gametype
 
+import geom.Vec2i
 import ansi.ColorSetting
 
 /** A game entity. */

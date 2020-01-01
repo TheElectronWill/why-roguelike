@@ -1,4 +1,5 @@
 package com.electronwill.why
+package geom
 
 import Vec2i._
 import scala.annotation.alpha

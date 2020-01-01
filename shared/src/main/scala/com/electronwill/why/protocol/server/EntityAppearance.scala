@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.Vec2i
+import why.geom.Vec2i
 import why.ansi.ColorSetting
 import why.gametype.EntityId
 

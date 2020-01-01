@@ -1,10 +1,12 @@
 package com.electronwill.why
 package server.gen
 
-import scala.util.Random
 import server.ServerDungeonLevel
 import server.gametype._
 import gametype._
+import geom._
+
+import scala.util.Random
 
 /**
  * Un générateur de niveau basé sur de la marche aléatoire.
@@ -65,6 +67,6 @@ class WalkingGenerator(private val width: Int,
 }
 
 object WalkingGenerator {
-  import com.electronwill.why.Vec2i._
+  import Vec2i._
   private val Directions = Seq(UP, RIGHT, DOWN, LEFT)
 }

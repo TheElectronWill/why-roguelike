@@ -2,9 +2,9 @@ package com.electronwill
 package why.protocol
 
 import niol.{NiolInput, NiolOutput}
-import why.Vec2i
 import why.ansi._
 import why.gametype.RegisteredType
+import why.geom.Vec2i
 
 /* Extend Niol capabilities to support WHY structures
  * Use import why.protocol._ to get that

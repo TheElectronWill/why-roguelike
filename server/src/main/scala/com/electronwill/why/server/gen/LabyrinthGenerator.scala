@@ -2,8 +2,10 @@ package com.electronwill.why
 package server.gen
 
 import gametype._
+import geom._
 import server.ServerDungeonLevel
 import server.gametype._
+
 import scala.util.Random
 
 class LabyrinthGenerator(private val width: Int,

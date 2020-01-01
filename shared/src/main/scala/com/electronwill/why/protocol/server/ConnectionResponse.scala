@@ -3,7 +3,7 @@ package why.protocol
 package server
 
 import niol._
-import why.Vec2i
+import why.geom.Vec2i
 
 case class ConnectionResponse(accept: Boolean, serverVersion: String, message: String) extends ServerPacket(0) {
   def writeData(out: NiolOutput): Unit =
