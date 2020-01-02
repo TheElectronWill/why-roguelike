@@ -38,7 +38,7 @@ class ClientDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, t
     visionGrid(pos) = Visible
 
     val newVision = computeVision(pos, dir)
-    for visible <- newVision do
+    for visible <- newVision if isValid(visible) do
       visionGrid(visible) = Visible
 
     for adjacent <- terrain.coordSquareAround(pos, 1) do

@@ -57,11 +57,15 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
       private var p = start
       private var len = 0
 
-      def hasNext = len < maxLength && isValid(p)
+      def hasNext = len < maxLength
 
       def next =
         val current = p
-        len += (if isBlocked(current) then blockingPower else 1)
+        len += (
+          if !isValid(current) then Int.MaxValue/2
+          else if isBlocked(current) then blockingPower
+          else 1
+        )
         p += dir.vector
         current
     }
@@ -127,10 +131,9 @@ abstract class DungeonLevel[E >: Null <: Entity : ClassTag](
     val start = viewer + dir.vector // in front of `viewer`
     val vision = castLine(start, dir).to(ArrayBuffer)
     val centralObstacle = vision.last
-    //Logger.info(s"Central obstacle: $centralObstacle")
-
-    halfVision(vision, viewer, dir, dir.vector + dir.right.vector, centralObstacle)
-    halfVision(vision, viewer, dir, dir.vector + dir.left.vector, centralObstacle)
+    if vision.length > 1
+      halfVision(vision, viewer, dir, dir.vector + dir.right.vector, centralObstacle)
+      halfVision(vision, viewer, dir, dir.vector + dir.left.vector, centralObstacle)
     vision
 
   /** Computes half of the triangular field of view. Avoids to use full raycasting as much as possible. */
