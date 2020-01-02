@@ -32,7 +32,7 @@ class PacketReader(private val in: NiolInput) extends Runnable {
       Logger.info(s"Got packet of length $packetLength")
       val packetBuffer = CircularBuffer(BytesStorage.allocateHeap(packetLength))
       in.read(packetBuffer)
-      Logger.info("Read the whold packet.")
+      Logger.info("Read the whole packet.")
 
       val packet: Try[ServerPacket] = ServerPacket.parse(packetBuffer)
       packet match

@@ -5,12 +5,14 @@ import why.gametype._
 import why.geom._
 import why.{DungeonLevel, Logger}
 import why.protocol.server.{ServerPacket, EntitySpawn, EntityDelete, EntityMove}
-import gametype.{Entities, ServerEntity, Player}
+import gametype.{Entities, ServerEntity, Player, Tiles}
 import collection.RecyclingIndex
 import scala.collection.mutable.LongMap
 
 class ServerDungeonLevel(number: Int, name: String, spawn: Vec2i, exit: Vec2i, terrain: Grid[RegisteredType])
-  extends DungeonLevel[ServerEntity](number: Int, name, spawn, exit, terrain) {
+    extends DungeonLevel[ServerEntity](number: Int, name, spawn, exit, terrain) {
+
+  require(terrain(exit) == Tiles.Stairs, s"Incorrect exit type: ${terrain(exit)}")
 
   /** The players currently in this level. */
   def players: Iterable[Player] =

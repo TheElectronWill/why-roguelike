@@ -33,7 +33,7 @@ class BspGenerator(private val minWidth: Int,
     val tiles = Grid[RegisteredType](width, height, Tiles.Void)
 
     // 2: divide the space
-    val tree = BspTree(Box.corners(Vec2i(1,1), Vec2i(width-1, height-1))) // prevent the floor from touching the terrain's borders
+    val tree = BspTree(Box.corners(Vec2i(1,1), Vec2i(width-2, height-2))) // prevent the floor from touching the terrain's borders
     split(tree.root, 0, splitCount(level))
 
     // 3: create the rooms (and the spawn and exit in 2 different rooms)
@@ -46,13 +46,15 @@ class BspGenerator(private val minWidth: Int,
           spawn = room.randomPoint
         lastRoom = room
 
+    // 4: connect the rooms
+    // NB: it's important to do this BEFORE placing the exit to avoid erasing it
+    connectChilds(tree.root, tiles)
+
+    // 5: place the exit
     val exit = lastRoom.randomPoint
     tiles(exit) = Tiles.Stairs
 
-    // 4: connect the rooms
-    connectChilds(tree.root, tiles)
-
-    // 5: build the walls
+    // 6: build the walls
     // We do this after creating the rooms to allow merges
     val wallsPositions = SimpleBag[Vec2i]()
     for
@@ -71,13 +73,11 @@ class BspGenerator(private val minWidth: Int,
   private def connectChilds(n: BspNode, tiles: Grid[RegisteredType]): Unit =
     if n.isLeaf then return
     val (a,b) =
-      if n.childA.isLeaf
-        // We can introduce some randomness when connecting two leafs
-        (n.childA.box.randomPoint, n.childB.box.randomPoint)
-      else
-        // We CANNOT choose the points randomly when connecting two higher-level nodes,
-        // because otherwise we have no guarantee that there is a room containing the points.
-        (n.childA.box.roundedCenter, n.childB.box.roundedCenter)
+      // We CANNOT choose the points randomly when connecting two higher-level nodes,
+      // because otherwise we have no guarantee that there is a room containing the points.
+      // And we CANNOT either when connecting two rooms, because otherwise they might not
+      // connect with the rest of the dungeon.
+      (n.childA.box.roundedCenter, n.childB.box.roundedCenter)
     makeCorridor(a, b, tiles)
     connectChilds(n.childA, tiles)
     connectChilds(n.childB, tiles)

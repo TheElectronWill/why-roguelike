@@ -82,6 +82,8 @@ object Client {
         // writeChar(newPosition, player.tpe.character, player.customColor)
       setCursor(newPosition + d.vector) // make the cursor show where the player looks at
       network.send(PlayerMove(newPosition))
+      if newPosition == level.exitPosition
+        Logger.warn("Exiting the level...")
       true
 
   def redrawView(): Unit =
