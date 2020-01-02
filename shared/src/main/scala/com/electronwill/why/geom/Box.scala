@@ -24,6 +24,8 @@ final class Box private(private val xmin: Int, private val ymin: Int, private va
   def isWide = height < width
   def isSquare = height == width
 
+  def contains(p: Vec2i): Boolean = p.x >= xmin && p.x <= xmax && p.y >= ymin && p.y <= ymax
+
   def randomPoint = Vec2i(Random.between(xMin, xMax+1), Random.between(yMin, yMax+1))
 
   def randomBorderPoint =

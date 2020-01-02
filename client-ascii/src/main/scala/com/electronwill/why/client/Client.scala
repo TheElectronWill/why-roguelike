@@ -30,9 +30,12 @@ object Client {
     inputHandler = InputHandler()
     Thread(inputHandler).start()
 
+  private def levelFitsInScreen() =
+    level.width <= ConsoleOutput.width && level.height <= ConsoleOutput.height
+
   def initView() =
     levelView =
-      if level.width <= ConsoleOutput.width && level.height <= ConsoleOutput.height
+      if levelFitsInScreen()
         Box.positive(level.width, level.height)
       else
         Box.center(player.position, ConsoleOutput.width/2, ConsoleOutput.height/2)
@@ -42,18 +45,20 @@ object Client {
     setCursor(player.position + Direction.LEFT.vector)
 
   def moveView(d: Direction): Unit =
-    levelView = d match
-      case Direction.RIGHT =>
-        levelView.shift(ConsoleOutput.width-2*VIEW_PADDING, 0)
-      case Direction.LEFT =>
-        levelView.shift(-ConsoleOutput.width+2*VIEW_PADDING, 0)
-      case Direction.UP =>
-        levelView.shift(0, -ConsoleOutput.height+2*VIEW_PADDING)
-      case Direction.DOWN =>
-        levelView.shift(0, ConsoleOutput.height-2*VIEW_PADDING)
+    if !levelFitsInScreen()
+      levelView = d match
+        case Direction.RIGHT =>
+          levelView.shift(ConsoleOutput.width-2*VIEW_PADDING-1, 0)
+        case Direction.LEFT =>
+          levelView.shift(-ConsoleOutput.width+2*VIEW_PADDING+1, 0)
+        case Direction.UP =>
+          levelView.shift(0, -ConsoleOutput.height+2*VIEW_PADDING+1)
+        case Direction.DOWN =>
+          levelView.shift(0, ConsoleOutput.height-2*VIEW_PADDING-1)
     redrawView()
 
   def move(d: Direction): Boolean =
+    assert(level == player.level, "incorrect player state: level mismatch")
     val oldPosition = player.position
     val newPosition = oldPosition + d.vector
     if !level.terrain.isValid(newPosition) ||
@@ -72,15 +77,16 @@ object Client {
       else
         redrawView() // FIXME: I redraw the view to update the visibility of the terrain, but there is a better way
         // TODO optimize movement like before
-        //val belowPlayer = level.getVisibleTile(oldPosition)
-        //writeChar(oldPosition, belowPlayer.character)
-        //writeChar(newPosition, player.tpe.character, player.customColor)
+        // val belowPlayer = level.getVisibleTile(oldPosition)
+        // writeChar(oldPosition, belowPlayer.character)
+        // writeChar(newPosition, player.tpe.character, player.customColor)
       setCursor(newPosition + d.vector) // make the cursor show where the player looks at
       network.send(PlayerMove(newPosition))
       true
 
   def redrawView(): Unit =
     ConsoleOutput.clear()
+    assert(levelView.contains(player.position), "wrong view: it should always contain the player")
     Logger.info(s"Terminal size: ${ConsoleOutput.width} x ${ConsoleOutput.height}")
     Logger.info(s"Level size: (0, 0) to (${level.width}, ${level.height})")
     Logger.info(s"Player view: ${levelView.cornerMin} to ${levelView.cornerMax}")
