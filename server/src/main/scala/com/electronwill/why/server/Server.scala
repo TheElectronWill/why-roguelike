@@ -16,7 +16,7 @@ object Server {
   config.load()
 
   private val levels = LongMap[ServerDungeonLevel]() // int -> loaded level
-  private val generator = gen.BspGenerator(80, 20, 1000, 1000, 2) // generates levels
+  private val generator = gen.BspGenerator(80, 20, 1000, 1000, 3) // generates levels
   private val playersByClient = LongMap[Player]() // client id -> player entity
 
   val port: Int = config.get("port")

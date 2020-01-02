@@ -111,12 +111,12 @@ class BspGenerator(private val minWidth: Int,
     room
 
   /** Computes how many splitting operations to do */
-  private def splitCount(level: Int) = math.max(minSplits, level/2)
+  private def splitCount(level: Int) = math.max(minSplits, level/5)
 
   /** Computes the width and height of the terrain. level++ implies terrain++ */
   private def terrainSize(level: Int) =
     val w = math.min(maxWidth, minWidth + level)
-    val h = math.min(maxHeight, minHeight + level)
+    val h = math.min(maxHeight, minHeight + level*5)
     (w, h)
 
   /** Recursively splits a BSP Node. */
