@@ -56,8 +56,8 @@ object PacketHandler {
       Logger.warn(s"Invalid move from ${player.position} to $destination: travel distance too big - cheating?")
       client.sendPacket(Warning(s"$destination is too far away!"))
 
-    // stairs: go to the next level
-    else if terrain(destination) == Tiles.Stairs
+    // exit: go to the next level
+    else if destination == player.level.exitPosition
       val currentLevel = player.level
       val nextLevel = Server.getOrCreateLevel(currentLevel.number + 1)
       currentLevel.deleteEntity(player)
@@ -65,7 +65,7 @@ object PacketHandler {
       nextLevel.addEntity(player, nextLevel.spawnPosition)
       client.sendPacket(SetPlayerId(player.id))
 
-    // non-stairs: move in the same level
+    // not exit: move in the same level
     else
       player.level.moveEntity(player, destination)
 
